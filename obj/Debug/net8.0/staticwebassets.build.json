@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "+Hq5wdiW9ibjowD18qbxRCST9ruvD9jwrum0vcuB3gU=",
+  "Source": "RideConnect.API",
+  "BasePath": "_content/RideConnect.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

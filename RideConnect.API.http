@@ -1,0 +1,6 @@
+@RideConnect.API_HostAddress = http://localhost:5139
+
+GET {{RideConnect.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
