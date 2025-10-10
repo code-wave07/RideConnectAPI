@@ -1,23 +1,30 @@
 [
   {
-    "ContainingType": "RideConnect.API.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
+    "ContainingType": "RideConnect.API.Controllers.AuthenticationController",
+    "Method": "Login",
+    "RelativePath": "api/Authentication/login",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
+    "ReturnTypes": [],
+    "EndpointName": "login-user"
+  },
+  {
+    "ContainingType": "RideConnect.API.Controllers.AuthenticationController",
+    "Method": "RegisterUser",
+    "RelativePath": "api/Authentication/register-user",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[RideConnect.API.WeatherForecast, RideConnect.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
+        "Name": "request",
+        "Type": "RideConnect.Models.Requests.CustomerRegistrationRequest",
+        "IsRequired": true
       }
     ],
-    "EndpointName": "GetWeatherForecast"
+    "ReturnTypes": [],
+    "EndpointName": "register-user"
   }
 ]

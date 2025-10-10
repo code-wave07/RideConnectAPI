@@ -155,3 +155,7 @@ C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\ru\Microsoft.CodeAn
 C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\david\source\repos\RideConnect.API\obj\Debug\net8.0\RideConnect.API.sourcelink.json
+C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\RideConnect.Infrastructure.dll
+C:\Users\david\source\repos\RideConnect.API\bin\Debug\net8.0\RideConnect.Infrastructure.pdb
