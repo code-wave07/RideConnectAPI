@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RideConnect.Data.Context;
+using RideConnect.Infrastructure.Extension;
+using RideConnect.Data.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +13,14 @@ builder.Services.AddDbContext<RideConnectDbContext>(options =>
         opt.MigrationsAssembly("RideConnect.Data");
     }));
 
+builder.Services.AddIdentity();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.RegisterServices();
 
 var app = builder.Build();
 
