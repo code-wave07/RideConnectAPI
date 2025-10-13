@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\RideConnect.API.props" />
+</Project>
