@@ -1,0 +1,12 @@
+C:\Users\david\source\repos\RideConnect.Models\bin\Debug\net8.0\RideConnect.Models.deps.json
+C:\Users\david\source\repos\RideConnect.Models\bin\Debug\net8.0\RideConnect.Models.dll
+C:\Users\david\source\repos\RideConnect.Models\bin\Debug\net8.0\RideConnect.Models.pdb
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.AssemblyInfoInputs.cache
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.AssemblyInfo.cs
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.csproj.CoreCompileInputs.cache
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.dll
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\refint\RideConnect.Models.dll
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.pdb
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\ref\RideConnect.Models.dll
+C:\Users\david\source\repos\RideConnect.Models\obj\Debug\net8.0\RideConnect.Models.csproj.AssemblyReference.cache
