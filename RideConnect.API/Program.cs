@@ -5,7 +5,7 @@ using RideConnect.Data.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 
 builder.Services.AddDbContext<RideConnectDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), opt =>

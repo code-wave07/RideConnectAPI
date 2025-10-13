@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RideConnect.Models")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+43b53ae21c8fa44fc7ce6bd082cde60700ad6ea0")]
 [assembly: System.Reflection.AssemblyProductAttribute("RideConnect.Models")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RideConnect.Models")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
