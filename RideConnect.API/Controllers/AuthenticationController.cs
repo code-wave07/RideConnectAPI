@@ -1,10 +1,12 @@
 
+using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RideConnect.Infrastructure.Interfaces;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Response;
 using Swashbuckle.AspNetCore.Annotations;
+using RideConnect.Infrastructure.Implementation;
 
 namespace RideConnect.API.Controllers;
 
@@ -32,12 +34,14 @@ public class AuthenticationController : BaseController
         return Ok(response);
     }
 
-    [HttpGet("login", Name = "login-user")]
+    [HttpPost("register-driver", Name = "register-driver")]
     //[SwaggerOperation(Summary = "Login User")]
-    //[SwaggerResponse(StatusCodes.Status200OK, Description = "SuccessfulyLog in user", Type = typeof(SuccessResponse))]
+    //[SwaggerResponse(StatusCodes.Status200OK, Description = "SuccessfullyLog in user", Type = typeof(SuccessResponse))]
     //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Username and Password", Type = typeof(ErrorResponse))]
-    public async Task<IActionResult> Login()
+    public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
     {
-        return Ok();
+        string response = await _authenticationService.RegisterDriver(request);
+
+        return Ok(response);
     }
 }
