@@ -3052,23 +3052,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\david\\.nuget\\packages\\": {},
+    "C:\\Users\\TOBY AKI\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Infrastructure\\RideConnect.Infrastructure.csproj",
+      "projectUniqueName": "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Infrastructure\\RideConnect.Infrastructure.csproj",
       "projectName": "RideConnect.Infrastructure",
-      "projectPath": "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Infrastructure\\RideConnect.Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\david\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Infrastructure\\obj\\",
+      "projectPath": "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Infrastructure\\RideConnect.Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\TOBY AKI\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\david\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\TOBY AKI\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3083,11 +3083,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Data\\RideConnect.Data.csproj": {
-              "projectPath": "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Data\\RideConnect.Data.csproj"
+            "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Data\\RideConnect.Data.csproj": {
+              "projectPath": "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Data\\RideConnect.Data.csproj"
             },
-            "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Models\\RideConnect.Models.csproj": {
-              "projectPath": "C:\\Users\\david\\source\\repos\\RideConnect\\RideConnect.Models\\RideConnect.Models.csproj"
+            "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Models\\RideConnect.Models.csproj": {
+              "projectPath": "C:\\Users\\TOBY AKI\\source\\repos\\RideConnectAPI\\RideConnect.Models\\RideConnect.Models.csproj"
             }
           }
         }
@@ -3102,7 +3102,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.200"
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net8.0": {
@@ -3123,7 +3123,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.301/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

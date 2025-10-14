@@ -52,4 +52,15 @@ public class AuthenticationService : IAuthenticationService
 
         return "User Created Successfully";
     }
+
+    public static async Task<string> GetUserDetails (CustomerPersonalDataRequest request)
+    {
+        CustomerPersonalData customerPersonalData = new CustomerPersonalData
+        {
+            DateOfBirth = request.DateOfBirth,
+            Address = request.Address,
+        };
+
+        return "User Details Added Successfully";
+    }
 }
