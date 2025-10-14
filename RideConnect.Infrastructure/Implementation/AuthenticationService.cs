@@ -17,7 +17,7 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IServiceFactory _serviceFactory;s
+    private readonly IServiceFactory _serviceFactory;
 
     public AuthenticationService(IServiceFactory serviceFactory, UserManager<ApplicationUser> userManager)
     {
