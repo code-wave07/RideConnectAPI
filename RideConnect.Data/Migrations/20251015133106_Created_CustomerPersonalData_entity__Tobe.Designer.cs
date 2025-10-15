@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251015133106_Created_CustomerPersonalData_entity__Tobe")]
+    partial class Created_CustomerPersonalData_entity__Tobe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -315,7 +318,8 @@ namespace RideConnect.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Address")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(MAX)")
+                        .HasColumnName("varchar(256)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -342,7 +346,6 @@ namespace RideConnect.Data.Migrations
             modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(256)");
 
                     b.Property<bool>("Active")
@@ -350,26 +353,26 @@ namespace RideConnect.Data.Migrations
 
                     b.Property<string>("CarColor")
                         .IsRequired()
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.Property<string>("CarModel")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.Property<string>("CarPlateNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DlNumber")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.Property<string>("ProductionYear")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -380,14 +383,11 @@ namespace RideConnect.Data.Migrations
 
                     b.Property<string>("VehicleMake")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(MAX)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("DriverPersonalData");
                 });
@@ -522,8 +522,8 @@ namespace RideConnect.Data.Migrations
             modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithOne("CarDetails")
-                        .HasForeignKey("RideConnect.Models.Entities.DriverPersonalData", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -535,12 +535,6 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("CarDetails")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

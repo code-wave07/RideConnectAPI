@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251015134317_Updated_DriverPersonalData_strin_maxlengths__Tolu")]
+    partial class Updated_DriverPersonalData_strin_maxlengths__Tolu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -386,8 +389,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("DriverPersonalData");
                 });
@@ -522,8 +524,8 @@ namespace RideConnect.Data.Migrations
             modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithOne("CarDetails")
-                        .HasForeignKey("RideConnect.Models.Entities.DriverPersonalData", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -535,12 +537,6 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("CarDetails")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

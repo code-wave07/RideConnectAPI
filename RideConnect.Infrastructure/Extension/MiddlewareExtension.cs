@@ -19,6 +19,7 @@ public static class MiddlewareExtension
     public static void RegisterServices(this IServiceCollection services)
     {
         services.AddTransient<IAuthenticationService, AuthenticationService>();
+        services.AddTransient<IDriverService, DriverService>();
         services.AddTransient<IServiceFactory, ServiceFactory>();
         services.AddTransient<IUnitOfWork, UnitOfWork<RideConnectDbContext>>();
     }

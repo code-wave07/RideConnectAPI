@@ -11,5 +11,5 @@ public class ApplicationUser : IdentityUser<string>
     public UserType UserType { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; set; }
-    
+    public virtual DriverPersonalData CarDetails { get; set; }
 }

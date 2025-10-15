@@ -49,8 +49,22 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
-            b.Property(x => x.Address).HasColumnName("varchar(256)");
+            b.Property(x => x.Address).HasColumnType("varchar(256)");
             b.Property(x => x.DateOfBirth);
+            b.HasIndex(x => x.Id);
+        });
+
+        modelBuilder.Entity<DriverPersonalData>(b =>
+        {
+            //b.HasKey(x => x.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.DlNumber).HasColumnType("varchar(50)");
+            b.Property(e => e.VehicleMake).HasColumnType("varchar(50)");
+            b.Property(e => e.CarModel).HasColumnType("varchar(50)");
+            b.Property(e => e.ProductionYear).HasColumnType("varchar(50)");
+            b.Property(x => x.CarColor).HasColumnType("varchar(10)");
+            b.Property(e => e.CarPlateNumber).HasColumnType("varchar(20)");
+       
             b.HasIndex(x => x.Id);
         });
     }
