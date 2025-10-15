@@ -11,4 +11,5 @@ namespace RideConnect.Infrastructure.Interfaces;
 public interface IAuthenticationService
 {
     public Task<string> RegisterUser(CustomerRegistrationRequest request);
+    public Task<string> RegisterDriver(DriverRegistrationRequest request);
 }

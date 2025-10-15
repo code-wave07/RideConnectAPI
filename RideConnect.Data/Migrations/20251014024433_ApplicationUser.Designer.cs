@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251014024433_ApplicationUser")]
+    partial class ApplicationUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -337,56 +340,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CustomerPersonalData");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("CarColor")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<string>("CarModel")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<string>("CarPlateNumber")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DlNumber")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<string>("ProductionYear")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("VehicleMake")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DriverPersonalData");
+                    b.ToTable("CustomerPersonalDatas");
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -506,17 +460,6 @@ namespace RideConnect.Data.Migrations
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
-                {
-                    b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
                         .WithMany()
