@@ -14,7 +14,8 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
     {
     }
     public DbSet<Menu> Menus { get; set; }
-    public DbSet<CustomerPersonalData> CustomerPersonalDatas { get; set; }
+    public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
+    public DbSet<DriverPersonalData> DriverPersonalData { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

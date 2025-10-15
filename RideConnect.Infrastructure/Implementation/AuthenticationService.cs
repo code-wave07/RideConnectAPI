@@ -43,6 +43,7 @@ public class AuthenticationService : IAuthenticationService
             PhoneNumber = request.PhoneNumber,
             Firstname = request.Firstname,
             Lastname = request.Lastname,
+            UserType = UserType.Customer
         };
 
         IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
@@ -50,7 +51,46 @@ public class AuthenticationService : IAuthenticationService
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
 
-        return "User Created Successfully";
+        return $"{newUser.UserType} Created Successfully";
+    }
+
+    public async Task<string> RegisterDriver(DriverRegistrationRequest request)
+    {
+        ApplicationUser existingUser = await _userManager.FindByNameAsync(request.PhoneNumber);
+
+        if (existingUser != null)
+            throw new InvalidOperationException("Username already exist");
+
+        if (String.Equals(request.Password, request.ConfirmPassword) == false)
+            throw new InvalidOperationException("Password and Confirm Password must match");
+
+        ApplicationUser newUser = new ApplicationUser
+        {
+            Firstname = request.Firstname,
+            Lastname = request.Lastname,
+            PhoneNumber = request.PhoneNumber,
+            Email = request.Email,
+            UserName = request.PhoneNumber,
+            UserType = UserType.Driver
+        };
+
+        DriverPersonalData carDetails = new DriverPersonalData
+        {
+            UserId = newUser.Id,
+            DlNumber = request.DlNumber,
+            VehicleMake = request.VehicleMake,
+            CarModel = request.CarModel,
+            ProductionYear = request.ProductionYear,
+            CarColor = request.CarColor,
+            CarPlateNumber = request.CarPlateNumber
+        };
+
+        IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
+
+        if (!result.Succeeded)
+            throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
+        
+        return $"{newUser.UserType} registered successfully.";
     }
 
     public static async Task<string> GetUserDetails (CustomerPersonalDataRequest request)
