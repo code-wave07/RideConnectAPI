@@ -13,3 +13,8 @@ public interface IAuthenticationService
     public Task<string> RegisterUser(CustomerRegistrationRequest request);
     public Task<string> RegisterDriver(DriverRegistrationRequest request);
 }
+
+public interface ICustomerPersonalDataService
+{
+    public abstract static Task<string> GetUserDetails(CustomerPersonalDataRequest request);
+}

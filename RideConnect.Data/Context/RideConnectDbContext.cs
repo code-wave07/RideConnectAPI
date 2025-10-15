@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RideConnect.Models.Entities;
@@ -18,13 +17,11 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
     public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
     public DbSet<DriverPersonalData> DriverPersonalData { get; set; }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
-
             foreach (var property in entity.GetProperties())
             {
                 if (property.ClrType == typeof(string))
@@ -53,10 +50,8 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
             b.Property(x => x.Address).HasColumnName("varchar(256)");
-
+            b.Property(x => x.DateOfBirth);
             b.HasIndex(x => x.Id);
-
         });
     }
-
 }
