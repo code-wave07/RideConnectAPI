@@ -62,7 +62,6 @@ public class DriverService : IDriverService
         };
 
         return response;
-        //DriverPersonalData driverPersonalData = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
     }
 
 }
