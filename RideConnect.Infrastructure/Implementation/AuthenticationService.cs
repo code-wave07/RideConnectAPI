@@ -10,6 +10,7 @@ using RideConnect.Infrastructure.Interfaces;
 using RideConnect.Models.Entities;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Enums;
+using Microsoft.VisualBasic;
 
 namespace RideConnect.Infrastructure.Implementation;
 
@@ -18,12 +19,19 @@ public class AuthenticationService : IAuthenticationService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
+    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
+    private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
+
+
 
     public AuthenticationService(IServiceFactory serviceFactory, UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
+
     }
 
     public async Task<string> RegisterUser(CustomerRegistrationRequest request)
@@ -74,6 +82,11 @@ public class AuthenticationService : IAuthenticationService
             UserType = UserType.Driver
         };
 
+        IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
+
+        if (!result.Succeeded)
+            throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
+
         DriverPersonalData carDetails = new DriverPersonalData
         {
             UserId = newUser.Id,
@@ -85,11 +98,9 @@ public class AuthenticationService : IAuthenticationService
             CarPlateNumber = request.CarPlateNumber
         };
 
-        IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
+        _driverPersonalDataRepo.Add(carDetails);
+        await _unitOfWork.SaveChangesAsync();
 
-        if (!result.Succeeded)
-            throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
-        
         return $"{newUser.UserType} registered successfully.";
     }
 }
