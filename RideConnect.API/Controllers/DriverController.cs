@@ -28,9 +28,9 @@ public class DriverController : BaseController
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
     //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Data", Type = typeof(ErrorResponse))]
-    public async Task<IActionResult> GetDriverProfile([FromQuery] string userId)
+    public async Task<IActionResult> GetDriverProfile()
     {
-        DriverProfileResponse response = await _driverService.GetDriverDetails(userId);
+        DriverProfileResponse response = await _driverService.GetDriverDetails();
         return Ok(response);
     }
 }
