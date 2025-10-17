@@ -11,5 +11,5 @@ namespace RideConnect.Infrastructure.Interfaces;
 
 public interface IDriverService
 {
-    public Task<DriverProfileResponse> GetDriverDetails(string userId);
+    public Task<DriverProfileResponse> GetDriverDetails();
 }
