@@ -13,6 +13,9 @@ using RideConnect.Models.Enums;
 using Microsoft.VisualBasic;
 using RideConnect.Models.Response;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using RideConnect.Infrastructure.Infrastructure;
 
 namespace RideConnect.Infrastructure.Implementation;
 
@@ -23,6 +26,7 @@ public class DriverService : IDriverService
     private readonly IServiceFactory _serviceFactory;
     private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
     private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
+    private readonly IHttpContextAccessor _contextAccessor;
 
 
 
@@ -33,11 +37,16 @@ public class DriverService : IDriverService
         _applicationUserRepo = _unitOfWork.GetRepository<ApplicationUser>();
         _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
-
+        _contextAccessor = _serviceFactory.GetService<IHttpContextAccessor>();
     }
 
-    public async Task<DriverProfileResponse> GetDriverDetails(string userId)
+    public async Task<DriverProfileResponse> GetDriverDetails()
     {
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+
+        if (userId == null)
+            throw new InvalidOperationException("User not authenticated");
+
         ApplicationUser driver = await _applicationUserRepo.GetSingleByAsync(x => x.Id == userId,
                     include: x => x.Include(x => x.CarDetails)); 
 
@@ -50,6 +59,8 @@ public class DriverService : IDriverService
             EmailAddress = driver.Email!,
             Username = driver.UserName!,
             MobileNumber = driver.PhoneNumber!,
+            UserType = driver.UserType.GetStringValue(),
+            UserTypeId = driver.UserType,
             CarDetails = new DriverCarDetailsResponse
             {
                 DlNumber = driver.CarDetails?.DlNumber!,

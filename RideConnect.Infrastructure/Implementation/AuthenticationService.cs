@@ -11,6 +11,9 @@ using RideConnect.Models.Entities;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Enums;
 using Microsoft.VisualBasic;
+using System.Security.Claims;
+using RideConnect.Services.Infrastructure;
+using RideConnect.Models.Response;
 
 namespace RideConnect.Infrastructure.Implementation;
 
@@ -32,6 +35,41 @@ public class AuthenticationService : IAuthenticationService
         _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
 
+    }
+
+    public async Task<LoginResponse> Login(LoginRequest request)
+    {
+        ApplicationUser existingUser = await _userManager.FindByNameAsync(request.Username);
+
+        if (existingUser == null)
+            throw new InvalidOperationException("Invalid Username or Password");
+
+        if (!existingUser.Active)
+            throw new InvalidOperationException("Account not activated");
+
+        bool isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, request.Password);
+
+        if (!isPasswordValid)
+            throw new InvalidOperationException("Invalid Username or Password");
+
+        JWTToken userToken = await _serviceFactory.GetService<IJWTAuthenticator>().GenerateJwtToken(existingUser);
+
+
+        string fullName = $"{existingUser.Firstname} {existingUser.Lastname}";
+
+        await _userManager.UpdateAsync(existingUser);
+
+        //await _serviceFactory.GetService<IEmailService>().SendTwoFactorAuthenticationEmail(user);
+
+        return new LoginResponse { 
+            UserType = existingUser.UserType.GetStringValue(),
+            UserTypeId = existingUser.UserType,
+            FullName = fullName, 
+            UserId = existingUser.Id, 
+            //TwoFactor = true,
+            JwtToken = userToken, 
+            //Role = userRoles.FirstOrDefault()
+            };
     }
 
     public async Task<string> RegisterUser(CustomerRegistrationRequest request)
