@@ -1,4 +1,6 @@
 ﻿
+using RideConnect.Models.Enums;
+
 namespace RideConnect.Models.Response;
 
 public class DriverProfileResponse
@@ -7,6 +9,8 @@ public class DriverProfileResponse
     public string MobileNumber { get; set; }
     public string EmailAddress { get; set; }
     public string Username { get; set; }
+    public UserType UserTypeId { get; set; }
+    public string UserType{ get; set; }
     public DriverCarDetailsResponse CarDetails { get; set; }
 }
 
