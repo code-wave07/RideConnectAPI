@@ -17,7 +17,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "VehicleMake",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(50)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -25,7 +25,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProductionYear",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(50)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -33,7 +33,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "DlNumber",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(50)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -41,7 +41,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarPlateNumber",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(20)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -49,7 +49,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarModel",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(50)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -57,7 +57,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarColor",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(10)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -74,7 +74,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_DriverPersonalData_Id",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 column: "Id");
         }
 
@@ -83,7 +83,7 @@ namespace RideConnect.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_DriverPersonalData_Id",
-                table: "DriverPersonalData");
+                table: "CarDetails");
 
             migrationBuilder.RenameColumn(
                 name: "Address",
@@ -92,7 +92,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "VehicleMake",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -100,7 +100,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProductionYear",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -108,7 +108,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "DlNumber",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -116,7 +116,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarPlateNumber",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -124,7 +124,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarModel",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -132,7 +132,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "CarColor",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 type: "varchar(MAX)",
                 nullable: false,
                 oldClrType: typeof(string),

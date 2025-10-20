@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RideConnect.Models.Entities;
 
-public class DriverPersonalData : BaseEntity
+public class CarDetails : BaseEntity
 {
     public string Id { get; set; }
     public string DlNumber { get; set; }

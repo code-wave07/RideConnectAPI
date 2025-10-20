@@ -12,11 +12,11 @@ namespace RideConnect.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_DriverPersonalData_UserId",
-                table: "DriverPersonalData");
+                table: "CarDetails");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DriverPersonalData_UserId",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 column: "UserId",
                 unique: true);
         }
@@ -26,11 +26,11 @@ namespace RideConnect.Data.Migrations
         {
             migrationBuilder.DropIndex(
                 name: "IX_DriverPersonalData_UserId",
-                table: "DriverPersonalData");
+                table: "CarDetails");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DriverPersonalData_UserId",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 column: "UserId");
         }
     }

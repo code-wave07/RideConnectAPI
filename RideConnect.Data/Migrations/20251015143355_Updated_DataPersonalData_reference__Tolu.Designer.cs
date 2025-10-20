@@ -342,7 +342,7 @@ namespace RideConnect.Data.Migrations
                     b.ToTable("CustomerPersonalData");
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -392,7 +392,7 @@ namespace RideConnect.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("DriverPersonalData");
+                    b.ToTable("CarDetails");
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -522,11 +522,11 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
                         .WithOne("CarDetails")
-                        .HasForeignKey("RideConnect.Models.Entities.DriverPersonalData", "UserId")
+                        .HasForeignKey("RideConnect.Models.Entities.CarDetails", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

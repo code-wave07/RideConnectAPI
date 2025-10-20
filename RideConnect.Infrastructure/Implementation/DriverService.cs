@@ -24,7 +24,7 @@ public class DriverService : IDriverService
     private readonly IRepository<ApplicationUser> _applicationUserRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
-    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
+    private readonly IRepository<CarDetails> _driverPersonalDataRepo;
     private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
     private readonly IHttpContextAccessor _contextAccessor;
 
@@ -35,7 +35,7 @@ public class DriverService : IDriverService
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
         _applicationUserRepo = _unitOfWork.GetRepository<ApplicationUser>();
-        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<CarDetails>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
         _contextAccessor = _serviceFactory.GetService<IHttpContextAccessor>();
     }
@@ -43,6 +43,7 @@ public class DriverService : IDriverService
     public async Task<DriverProfileResponse> GetDriverDetails()
     {
         string userId = _contextAccessor.HttpContext.User.GetUserId();
+        
 
         if (userId == null)
             throw new InvalidOperationException("User not authenticated");

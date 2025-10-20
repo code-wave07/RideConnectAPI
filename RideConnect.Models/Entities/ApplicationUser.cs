@@ -7,9 +7,9 @@ public class ApplicationUser : IdentityUser<string>
 {
     public string Firstname { get; set; }
     public string Lastname { get; set; }
-    public bool Active { get; set; }
+    public bool Active { get; set; } = true;
     public UserType UserType { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? UpdatedAt { get; set; }
-    public virtual DriverPersonalData CarDetails { get; set; }
+    public virtual CarDetails CarDetails { get; set; }
 }

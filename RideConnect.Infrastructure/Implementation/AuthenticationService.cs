@@ -22,7 +22,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
-    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
+    private readonly IRepository<CarDetails> _driverPersonalDataRepo;
     private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
 
 
@@ -32,7 +32,7 @@ public class AuthenticationService : IAuthenticationService
         _userManager = userManager;
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
-        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<CarDetails>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
 
     }
@@ -125,7 +125,7 @@ public class AuthenticationService : IAuthenticationService
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
 
-        DriverPersonalData carDetails = new DriverPersonalData
+        CarDetails carDetails = new CarDetails
         {
             UserId = newUser.Id,
             DlNumber = request.DlNumber,

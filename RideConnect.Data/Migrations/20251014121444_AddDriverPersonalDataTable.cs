@@ -39,7 +39,7 @@ namespace RideConnect.Data.Migrations
                 column: "Id");
 
             migrationBuilder.CreateTable(
-                name: "DriverPersonalData",
+                name: "CarDetails",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(256)", nullable: false),
@@ -67,7 +67,7 @@ namespace RideConnect.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_DriverPersonalData_UserId",
-                table: "DriverPersonalData",
+                table: "CarDetails",
                 column: "UserId");
 
             migrationBuilder.AddForeignKey(
@@ -87,7 +87,7 @@ namespace RideConnect.Data.Migrations
                 table: "CustomerPersonalData");
 
             migrationBuilder.DropTable(
-                name: "DriverPersonalData");
+                name: "CarDetails");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_CustomerPersonalData",
