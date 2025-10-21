@@ -24,10 +24,10 @@ public class DriverService : IDriverService
     private readonly IRepository<ApplicationUser> _applicationUserRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
-    private readonly IRepository<CarDetails> _driverPersonalDataRepo;
+    private readonly IRepository<CarDetails> _carDetails;
     private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
     private readonly IHttpContextAccessor _contextAccessor;
-
+    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
 
 
     public DriverService(IServiceFactory serviceFactory)
@@ -35,9 +35,10 @@ public class DriverService : IDriverService
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
         _applicationUserRepo = _unitOfWork.GetRepository<ApplicationUser>();
-        _driverPersonalDataRepo = _unitOfWork.GetRepository<CarDetails>();
+        _carDetails = _unitOfWork.GetRepository<CarDetails>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
         _contextAccessor = _serviceFactory.GetService<IHttpContextAccessor>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
     }
 
     public async Task<DriverProfileResponse> GetDriverDetails()
@@ -49,7 +50,7 @@ public class DriverService : IDriverService
             throw new InvalidOperationException("User not authenticated");
 
         ApplicationUser driver = await _applicationUserRepo.GetSingleByAsync(x => x.Id == userId,
-                    include: x => x.Include(x => x.CarDetails)); 
+                    include: x => x.Include(x => x.DriverPersonalData).ThenInclude(x=> x.CarDetails)); //changed from CarDetails to DriverPersonalData since it no longer reference ApplicationUser
 
         if (driver == null)
             throw new InvalidOperationException("invalid user id ");
@@ -62,15 +63,19 @@ public class DriverService : IDriverService
             MobileNumber = driver.PhoneNumber!,
             UserType = driver.UserType.GetStringValue(),
             UserTypeId = driver.UserType,
-            CarDetails = new DriverCarDetailsResponse
-            {
-                DlNumber = driver.CarDetails?.DlNumber!,
-                VehicleMake = driver.CarDetails?.VehicleMake!,
-                CarModel = driver.CarDetails?.CarModel!,
-                ProductionYear = driver.CarDetails?.ProductionYear!,
-                CarColor = driver.CarDetails?.CarColor!,
-                CarPlateNumber = driver.CarDetails?.CarPlateNumber!
-            }
+
+           DriverPersonalDataResponse = new DriverPersonalDataResponse
+           {
+               CarDetails = new DriverCarDetailsResponse
+               {
+                   DlNumber = driver.DriverPersonalData.CarDetails?.DlNumber!,
+                   VehicleMake = driver.DriverPersonalData.CarDetails?.VehicleMake!,
+                   CarModel = driver.DriverPersonalData.CarDetails?.CarModel!,
+                   ProductionYear = driver.DriverPersonalData.CarDetails?.ProductionYear!,
+                   CarColor = driver.DriverPersonalData.CarDetails?.CarColor!,
+                   CarPlateNumber = driver.DriverPersonalData.CarDetails?.CarPlateNumber!
+               }
+           }
         };
 
         return response;

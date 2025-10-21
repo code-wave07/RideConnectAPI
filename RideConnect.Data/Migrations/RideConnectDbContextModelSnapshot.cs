@@ -352,10 +352,9 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.ToTable("CarDetails");
+                    b.ToTable("CarDetails", (string)null);
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
@@ -389,7 +388,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CustomerPersonalData");
+                    b.ToTable("CustomerPersonalData", (string)null);
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -418,34 +417,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.RideType", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Price")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("varchar(MAX)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RideType");
+                    b.ToTable("Menus", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -538,8 +510,8 @@ namespace RideConnect.Data.Migrations
             modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithOne("CarDetails")
-                        .HasForeignKey("RideConnect.Models.Entities.CarDetails", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -562,12 +534,6 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("CarDetails")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

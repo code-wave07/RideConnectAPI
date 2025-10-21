@@ -22,7 +22,8 @@ public class AuthenticationService : IAuthenticationService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
-    private readonly IRepository<CarDetails> _driverPersonalDataRepo;
+    private readonly IRepository<CarDetails> _carDetailsRepo;
+    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
     private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
 
 
@@ -32,7 +33,8 @@ public class AuthenticationService : IAuthenticationService
         _userManager = userManager;
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
-        _driverPersonalDataRepo = _unitOfWork.GetRepository<CarDetails>();
+        _carDetailsRepo = _unitOfWork.GetRepository<CarDetails>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
 
     }
@@ -125,9 +127,15 @@ public class AuthenticationService : IAuthenticationService
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
 
-        CarDetails carDetails = new CarDetails
+        DriverPersonalData driverPersonalData = new DriverPersonalData
         {
             UserId = newUser.Id,
+            
+        };
+
+        CarDetails carDetails = new CarDetails
+        {
+            Id = driverPersonalData.Id,//update to driver personal data
             DlNumber = request.DlNumber,
             VehicleMake = request.VehicleMake,
             CarModel = request.CarModel,
@@ -136,7 +144,8 @@ public class AuthenticationService : IAuthenticationService
             CarPlateNumber = request.CarPlateNumber
         };
 
-        _driverPersonalDataRepo.Add(carDetails);
+        _carDetailsRepo.Add(carDetails);
+        _driverPersonalDataRepo.Add(driverPersonalData);
         await _unitOfWork.SaveChangesAsync();
 
         return $"{newUser.UserType} registered successfully.";
