@@ -11,9 +11,15 @@ public class DriverProfileResponse
     public string Username { get; set; }
     public UserType UserTypeId { get; set; }
     public string UserType{ get; set; }
-    public DriverCarDetailsResponse CarDetails { get; set; }
+   public DriverPersonalDataResponse DriverPersonalDataResponse { get; set; }
 }
 
+
+public class DriverPersonalDataResponse
+{
+    public string Id { get; set; }
+    public DriverCarDetailsResponse CarDetails { get; set; }
+}
 public class DriverCarDetailsResponse
 {
     public string DlNumber { get; set; }

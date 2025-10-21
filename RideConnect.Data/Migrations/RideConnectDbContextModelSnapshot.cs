@@ -305,41 +305,7 @@ namespace RideConnect.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomerPersonalData");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -386,10 +352,43 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.ToTable("DriverPersonalData");
+                    b.ToTable("CarDetails", (string)null);
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CustomerPersonalData", (string)null);
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -418,7 +417,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus");
+                    b.ToTable("Menus", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -508,6 +507,17 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
+                {
+                    b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
@@ -519,28 +529,11 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
-                {
-                    b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithOne("CarDetails")
-                        .HasForeignKey("RideConnect.Models.Entities.DriverPersonalData", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RideConnect.Models.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("CarDetails")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

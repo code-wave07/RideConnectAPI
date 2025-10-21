@@ -21,5 +21,6 @@ namespace RideConnect.Models.Requests
         public string ProductionYear { get; set; }
         public string CarColor { get; set; }
         public string CarPlateNumber { get; set; }
+        public string MaxNumberOfBags { get; set; }
     }
 }
