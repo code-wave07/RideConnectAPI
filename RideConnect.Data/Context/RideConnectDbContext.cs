@@ -15,6 +15,9 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
     }
     public DbSet<Menu> Menus { get; set; }
     public DbSet<CustomerPersonalData> CustomerPersonalData { get; set; }
+    public DbSet<CarDetails> CarDetails { get; set; }
+    public DbSet<RideType> RideType { get; set; }
+    public DbSet<Ride> Rides { get; set; }
     public DbSet<DriverPersonalData> DriverPersonalData { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,7 +52,45 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
+<<<<<<< HEAD
             b.Property(x => x.Address).HasColumnName("varchar(256)");
+=======
+            b.Property(x => x.Address).HasColumnType("varchar(256)");
+            b.Property(x => x.DateOfBirth);
+>>>>>>> 406ae155329c130344506782b1989dbd47bfa679
+            b.HasIndex(x => x.Id);
+        });
+
+        modelBuilder.Entity<DriverPersonalData>(b =>
+        {
+            //b.HasKey(x => x.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<Ride>(b =>
+        {
+            //b.HasKey(x => x.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<RideType>(b =>
+        {
+            //b.HasKey(x => x.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+        });
+
+
+        modelBuilder.Entity<CarDetails>(b =>
+        {
+            //b.HasKey(x => x.Id);
+            b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.DlNumber).HasColumnType("varchar(50)");
+            b.Property(e => e.VehicleMake).HasColumnType("varchar(50)");
+            b.Property(e => e.CarModel).HasColumnType("varchar(50)");
+            b.Property(e => e.ProductionYear).HasColumnType("varchar(50)");
+            b.Property(x => x.CarColor).HasColumnType("varchar(10)");
+            b.Property(e => e.CarPlateNumber).HasColumnType("varchar(20)");
+       
             b.HasIndex(x => x.Id);
         });
     }

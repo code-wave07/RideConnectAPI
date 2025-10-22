@@ -9,9 +9,7 @@ using RideConnect.Models.Response;
 
 namespace RideConnect.Infrastructure.Interfaces;
 
-public interface IAuthenticationService
+public interface IDriverService
 {
-    public Task<string> RegisterUser(CustomerRegistrationRequest request);
-    public Task<string> RegisterDriver(DriverRegistrationRequest request);
-    public Task<LoginResponse> Login(LoginRequest request);
+    public Task<DriverProfileResponse> GetDriverDetails();
 }

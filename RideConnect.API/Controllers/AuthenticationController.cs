@@ -11,7 +11,7 @@ using RideConnect.Infrastructure.Implementation;
 namespace RideConnect.API.Controllers;
 
 [Route("api/[controller]")]
-//[Authorize(Policy = "Authorization")]
+[Authorize(Policy = "Authorization")]
 [ApiController]
 [SwaggerTag("Authentication operations")]
 
@@ -24,6 +24,7 @@ public class AuthenticationController : BaseController
         _authenticationService = authenticationService;
     }
 
+    [AllowAnonymous]
     [HttpPost("register-user", Name = "register-user")]
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
@@ -34,6 +35,7 @@ public class AuthenticationController : BaseController
         return Ok(response);
     }
 
+    [AllowAnonymous]
     [HttpPost("register-driver", Name = "register-driver")]
     //[SwaggerOperation(Summary = "Login User")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "SuccessfullyLog in user", Type = typeof(SuccessResponse))]
@@ -41,6 +43,18 @@ public class AuthenticationController : BaseController
     public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
     {
         string response = await _authenticationService.RegisterDriver(request);
+
+        return Ok(response);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("login", Name = "login")]
+    //[SwaggerOperation(Summary = "Login User")]
+    //[SwaggerResponse(StatusCodes.Status200OK, Description = "SuccessfullyLog in user", Type = typeof(SuccessResponse))]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Username and Password", Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        LoginResponse response = await _authenticationService.Login(request);
 
         return Ok(response);
     }

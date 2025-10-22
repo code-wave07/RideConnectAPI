@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251015134317_Updated_DriverPersonalData_strin_maxlengths__Tolu")]
+    partial class Updated_DriverPersonalData_strin_maxlengths__Tolu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,6 +308,40 @@ namespace RideConnect.Data.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
+            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CustomerPersonalData");
+                });
+
             modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.Property<string>("Id")
@@ -354,41 +391,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CarDetails", (string)null);
-                });
-
-            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("CustomerPersonalData", (string)null);
+                    b.ToTable("CarDetails");
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -417,7 +420,7 @@ namespace RideConnect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -507,7 +510,7 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
+            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
                         .WithMany()
@@ -518,7 +521,7 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
+            modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
                     b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
                         .WithMany()

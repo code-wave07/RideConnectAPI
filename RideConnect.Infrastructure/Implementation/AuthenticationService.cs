@@ -10,6 +10,10 @@ using RideConnect.Infrastructure.Interfaces;
 using RideConnect.Models.Entities;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Enums;
+using Microsoft.VisualBasic;
+using System.Security.Claims;
+using RideConnect.Services.Infrastructure;
+using RideConnect.Models.Response;
 
 namespace RideConnect.Infrastructure.Implementation;
 
@@ -18,12 +22,56 @@ public class AuthenticationService : IAuthenticationService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
+    private readonly IRepository<CarDetails> _carDetailsRepo;
+    private readonly IRepository<DriverPersonalData> _driverPersonalDataRepo;
+    private readonly IRepository<CustomerPersonalData> _customerPersonalDataRepo;
+
+
 
     public AuthenticationService(IServiceFactory serviceFactory, UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
         _serviceFactory = serviceFactory;
         _unitOfWork = _serviceFactory.GetService<IUnitOfWork>();
+        _carDetailsRepo = _unitOfWork.GetRepository<CarDetails>();
+        _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
+
+    }
+
+    public async Task<LoginResponse> Login(LoginRequest request)
+    {
+        ApplicationUser existingUser = await _userManager.FindByNameAsync(request.Username);
+
+        if (existingUser == null)
+            throw new InvalidOperationException("Invalid Username or Password");
+
+        if (!existingUser.Active)
+            throw new InvalidOperationException("Account not activated");
+
+        bool isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, request.Password);
+
+        if (!isPasswordValid)
+            throw new InvalidOperationException("Invalid Username or Password");
+
+        JWTToken userToken = await _serviceFactory.GetService<IJWTAuthenticator>().GenerateJwtToken(existingUser);
+
+
+        string fullName = $"{existingUser.Firstname} {existingUser.Lastname}";
+
+        await _userManager.UpdateAsync(existingUser);
+
+        //await _serviceFactory.GetService<IEmailService>().SendTwoFactorAuthenticationEmail(user);
+
+        return new LoginResponse { 
+            UserType = existingUser.UserType.GetStringValue(),
+            UserTypeId = existingUser.UserType,
+            FullName = fullName, 
+            UserId = existingUser.Id, 
+            //TwoFactor = true,
+            JwtToken = userToken, 
+            //Role = userRoles.FirstOrDefault()
+            };
     }
 
     public async Task<string> RegisterUser(CustomerRegistrationRequest request)
@@ -74,9 +122,20 @@ public class AuthenticationService : IAuthenticationService
             UserType = UserType.Driver
         };
 
-        DriverPersonalData carDetails = new DriverPersonalData
+        IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
+
+        if (!result.Succeeded)
+            throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
+
+        DriverPersonalData driverPersonalData = new DriverPersonalData
         {
             UserId = newUser.Id,
+            
+        };
+
+        CarDetails carDetails = new CarDetails
+        {
+            Id = driverPersonalData.Id,//update to driver personal data
             DlNumber = request.DlNumber,
             VehicleMake = request.VehicleMake,
             CarModel = request.CarModel,
@@ -85,11 +144,10 @@ public class AuthenticationService : IAuthenticationService
             CarPlateNumber = request.CarPlateNumber
         };
 
-        IdentityResult result = await _userManager.CreateAsync(newUser, request.Password);
+        _carDetailsRepo.Add(carDetails);
+        _driverPersonalDataRepo.Add(driverPersonalData);
+        await _unitOfWork.SaveChangesAsync();
 
-        if (!result.Succeeded)
-            throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
-        
         return $"{newUser.UserType} registered successfully.";
     }
 
