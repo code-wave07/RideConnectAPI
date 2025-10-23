@@ -1,9 +1,8 @@
-﻿using Azure;
-using RideConnect.Models.Entities;
+﻿using RideConnect.Models.Requests;
 
 namespace RideConnect.Infrastructure.Interfaces;
 
 public interface IManagementService
 {
-   public Task<string> CreateRideType(string rideType);
+   public Task<string> AddOrUpdateRideType(RideTypeRequest request);
 }

@@ -13,7 +13,7 @@ namespace RideConnect.API.Controllers;
 [Route("api/[controller]")]
 [Authorize(Policy = "Authorization")]
 [ApiController]
-[SwaggerTag("Authentication operations")]
+[SwaggerTag("Management operations")]
 
 public class ManagementController : BaseController
 {
@@ -25,11 +25,11 @@ public class ManagementController : BaseController
     }
 
     [AllowAnonymous]
-    [HttpPost("ride-type", Name = "ride-type")]
+    [HttpPost("add-or-update-ride-type", Name = "add-or-update-ride-type")]
 
-    public async Task<IActionResult> CreateRideType([FromBody] string rideType)
+    public async Task<IActionResult> AddOrUpdateRideType([FromBody] RideTypeRequest request)
     {
-        string response = await _managementService.CreateRideType(rideType);
+        string response = await _managementService.AddOrUpdateRideType(request);
         return Ok(response);
     }
 }
