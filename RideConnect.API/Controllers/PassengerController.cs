@@ -13,7 +13,7 @@ namespace RideConnect.API.Controllers;
 [Route("api/[controller]")]
 //[Authorize(Policy = "Authorization")]
 [ApiController]
-[SwaggerTag("Authentication operations")]
+[SwaggerTag("Booking operations")]
 
 public class PassengerController : BaseController
 {
