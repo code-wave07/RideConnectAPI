@@ -130,12 +130,17 @@ public class AuthenticationService : IAuthenticationService
         DriverPersonalData driverPersonalData = new DriverPersonalData
         {
             UserId = newUser.Id,
+            BankName = request.BankName,
+            AccountNumber = request.AccountNumber,
+            AccountName = request.AccountName
             
         };
+        _driverPersonalDataRepo.Add(driverPersonalData);
 
         CarDetails carDetails = new CarDetails
         {
-            Id = driverPersonalData.Id,//update to driver personal data
+            UserId = driverPersonalData.Id,//update to driver personal data
+            NumberOfSeats = request.NumberOfSeats,
             DlNumber = request.DlNumber,
             VehicleMake = request.VehicleMake,
             CarModel = request.CarModel,
@@ -144,8 +149,8 @@ public class AuthenticationService : IAuthenticationService
             CarPlateNumber = request.CarPlateNumber
         };
 
+       
         _carDetailsRepo.Add(carDetails);
-        _driverPersonalDataRepo.Add(driverPersonalData);
         await _unitOfWork.SaveChangesAsync();
 
         return $"{newUser.UserType} registered successfully.";

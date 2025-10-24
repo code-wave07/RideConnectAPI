@@ -46,7 +46,7 @@ public class PassengerService : IPassengerService
             throw new InvalidOperationException("User not authenticated.");
 
         //  Verify passenger exists
-        CustomerPersonalData passenger = await _customerPersonalDataRepo.GetSingleByAsync(x => x.Id == userId);
+        ApplicationUser passenger = await _applicationUserRepo.GetSingleByAsync(x => x.Id == userId);
         if (passenger == null)
             throw new InvalidOperationException("Passenger not found.");
 
