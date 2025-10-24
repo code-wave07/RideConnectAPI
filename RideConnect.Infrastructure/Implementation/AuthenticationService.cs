@@ -99,6 +99,13 @@ public class AuthenticationService : IAuthenticationService
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
 
+        CustomerPersonalData customerData = new CustomerPersonalData
+        {
+            UserId = newUser.Id,
+        };
+        _customerPersonalDataRepo.Add(customerData);
+        await _unitOfWork.SaveChangesAsync();
+
         return $"{newUser.UserType} Created Successfully";
     }
 

@@ -46,7 +46,7 @@ public class PassengerService : IPassengerService
             throw new InvalidOperationException("User not authenticated.");
 
         //  Verify passenger exists
-        ApplicationUser passenger = await _applicationUserRepo.GetSingleByAsync(x => x.Id == userId);
+        CustomerPersonalData passenger = await _customerPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
         if (passenger == null)
             throw new InvalidOperationException("Passenger not found.");
 
@@ -56,7 +56,8 @@ public class PassengerService : IPassengerService
             throw new InvalidOperationException("Invalid ride type selected.");
 
         //  Validate driver
-        var driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.Id == request.DriverId);
+        DriverPersonalData driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.Id == request.DriverId);
+
         if (driver == null)
             throw new InvalidOperationException("Invalid driver selected.");
 
