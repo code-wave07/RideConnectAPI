@@ -24,6 +24,7 @@ public class DriverController : BaseController
         _driverService = driverService;
     }
 
+    [Authorize]
     [HttpGet("get-driver-profile", Name = "get-driver-profile")]
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
