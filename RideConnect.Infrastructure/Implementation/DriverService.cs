@@ -81,4 +81,45 @@ public class DriverService : IDriverService
         return response;
     }
 
+    public async Task<List<DriverProfileResponse>> GetAllDrivers()
+    {
+
+        IQueryable<DriverPersonalData> driversQueryable = _driverPersonalDataRepo.GetQueryable(
+            include: x => x
+                .Include(u => u.User)
+                .Include(x => x.CarDetails)
+        );
+
+        List<DriverPersonalData> drivers = await driversQueryable.ToListAsync();
+
+        if (!drivers.Any())
+            return new List<DriverProfileResponse>();
+
+        //response details
+        List<DriverProfileResponse> responses = drivers.Select(driver => new DriverProfileResponse
+        {
+            FullName = $"{driver.User.Firstname} {driver.User.Lastname}",
+            EmailAddress = driver.User.Email ?? string.Empty,
+            Username = driver.User.UserName ?? string.Empty,
+            MobileNumber = driver.User.PhoneNumber ?? string.Empty,
+            UserType = driver.User.UserType.GetStringValue(),
+            UserTypeId = driver.User.UserType,
+            DriverPersonalDataResponse = new DriverPersonalDataResponse
+            {
+                Id = driver.Id,
+                CarDetails = new DriverCarDetailsResponse
+                {
+                    DlNumber = driver.CarDetails?.DlNumber ?? string.Empty,
+                    VehicleMake = driver.CarDetails?.VehicleMake ?? string.Empty,
+                    CarModel = driver.CarDetails?.CarModel ?? string.Empty,
+                    ProductionYear = driver.CarDetails?.ProductionYear ?? string.Empty,
+                    CarColor = driver.CarDetails?.CarColor ?? string.Empty,
+                    CarPlateNumber = driver.CarDetails?.CarPlateNumber ?? string.Empty
+                }
+            }
+        }).ToList();
+
+        return responses;
+    }
+
 }

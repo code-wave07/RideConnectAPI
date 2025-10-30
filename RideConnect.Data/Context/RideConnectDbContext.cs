@@ -61,6 +61,10 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.HasIndex(x => x.Id);
+            b.Property(x => x.BankName).HasColumnType("varchar(256)");
+            b.Property(x => x.AccountNumber).HasColumnType("varchar(256)");
+            b.Property(x => x.AccountName).HasColumnType("varchar(256)");
         });
 
         modelBuilder.Entity<Ride>(b =>

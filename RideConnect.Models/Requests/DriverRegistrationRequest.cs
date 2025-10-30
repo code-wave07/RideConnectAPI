@@ -15,12 +15,15 @@ namespace RideConnect.Models.Requests
         public string PhoneNumber { get; set; }
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
+        public string NumberOfSeats { get; set; }
         public string DlNumber { get; set; }
         public string VehicleMake { get; set; }
         public string CarModel { get; set; }
         public string ProductionYear { get; set; }
         public string CarColor { get; set; }
         public string CarPlateNumber { get; set; }
-        public string MaxNumberOfBags { get; set; }
+        public string BankName { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
     }
 }

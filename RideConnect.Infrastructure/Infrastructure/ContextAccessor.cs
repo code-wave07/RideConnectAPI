@@ -22,3 +22,17 @@ public static class ContextAccessorExtension
     }
 
 }
+
+//public static class ContextAccessorExtension
+//{
+//    public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
+//    {
+//        return claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
+//    }
+
+//    public static string GetUserName(this ClaimsPrincipal claimsPrincipal)
+//    {
+//        return claimsPrincipal.Identity?.Name;
+//    }
+//}
+
