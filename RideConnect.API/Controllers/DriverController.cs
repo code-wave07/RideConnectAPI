@@ -34,4 +34,14 @@ public class DriverController : BaseController
         DriverProfileResponse response = await _driverService.GetDriverDetails();
         return Ok(response);
     }
+
+    [HttpGet("get-all-drivers", Name = "get-all-drivers")]
+    //[SwaggerOperation(Summary = "Registers Customer")]
+    //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Data", Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllDrivers()
+    {
+        List<DriverProfileResponse> response = await _driverService.GetAllDrivers();
+        return Ok(response);
+    }
 }

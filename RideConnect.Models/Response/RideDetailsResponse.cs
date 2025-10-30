@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RideConnect.Models.Enums;
 
 namespace RideConnect.Models.Response;
+
 
 public class RideDetailsResponse
 {
@@ -13,9 +10,26 @@ public class RideDetailsResponse
     public string Location { get; set; }
     public string Price { get; set; }
     public string RideStatus { get; set; }
-    public string RideType { get; set; }
-    public string DriverName { get; set; }
+    public RideStatus RideStatusId { get; set; }
+    public RideTypeResponse RideType { get; set; }
+    public DriverDataResponse Driver { get; set; }
+    public CustomerDataResponse Customer { get; set; }
+}
+
+public class DriverDataResponse
+{
+    public string Fullname { get; set; }
     public string DriverId { get; set; }
-    public string PassengerName { get; set; }
-    public string PassengerId { get;set; }
+}
+
+public class CustomerDataResponse
+{
+    public string Fullname { get; set; }
+    public string CustomerId { get; set; }
+}
+
+public class RideTypeResponse
+{
+    public string Name { get; set; }
+    public string RideTypeId { get; set; }
 }
