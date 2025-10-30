@@ -122,4 +122,45 @@ public class DriverService : IDriverService
         return responses;
     }
 
+
+    public async Task<DriverProfileResponse> GetDriver(string id)
+    {
+
+        ApplicationUser driver = await _applicationUserRepo.GetSingleByAsync(
+            x => x.Id == id,
+            include: x => x
+                .Include(u => u.DriverPersonalData)
+                .ThenInclude(c => c.CarDetails)
+        );
+
+        if (driver == null)
+            throw new InvalidOperationException("Driver not found");
+
+        //response details
+        DriverProfileResponse response = new DriverProfileResponse
+        {
+            FullName = $"{driver.Firstname} {driver.Lastname}",
+            EmailAddress = driver.Email ?? string.Empty,
+            Username = driver.UserName ?? string.Empty,
+            MobileNumber = driver.PhoneNumber ?? string.Empty,
+            UserType = driver.UserType.GetStringValue(),
+            UserTypeId = driver.UserType,
+            DriverPersonalDataResponse = new DriverPersonalDataResponse
+            {
+                CarDetails = new DriverCarDetailsResponse
+                {
+                    DlNumber = driver.DriverPersonalData.CarDetails?.DlNumber!,
+                    VehicleMake = driver.DriverPersonalData.CarDetails?.VehicleMake!,
+                    CarModel = driver.DriverPersonalData.CarDetails?.CarModel!,
+                    ProductionYear = driver.DriverPersonalData.CarDetails?.ProductionYear!,
+                    CarColor = driver.DriverPersonalData.CarDetails?.CarColor!,
+                    CarPlateNumber = driver.DriverPersonalData.CarDetails?.CarPlateNumber!
+                }
+            }
+
+        };
+
+        return response;
+    }
+
 }
