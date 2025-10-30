@@ -70,7 +70,9 @@ public class PassengerService : IPassengerService
             Location = request.Location,
             RideTypeId = request.RideTypeId,
             DriverId = request.DriverId,
-            RideStatus = RideStatus.InProgress
+            PassengerId = passenger.Id,
+            RideStatus = RideStatus.InProgress,
+            Price = request.Price
         };
 
         _rideRepo.Add(ride);
@@ -131,27 +133,38 @@ public class PassengerService : IPassengerService
         Ride ride = await _rideRepo.GetSingleByAsync(
             x => x.Id == rideId,
             include: x => x
-                .Include(r => r.Driver)
-                .Include(r => r.Passenger)
+                .Include(r => r.Driver).ThenInclude(x => x.User)
+                .Include(r => r.Passenger).ThenInclude(x => x.User)
                 .Include(r => r.RideType)
         );
 
         if (ride == null)
             throw new InvalidOperationException("Ride not found");
 
-      
-        var response = new RideDetailsResponse
+
+        RideDetailsResponse response = new RideDetailsResponse
         {
             RideId = ride.Id,
             From = ride.From,
             Location = ride.Location,
             Price = ride.Price,
             RideStatus = ride.RideStatus.ToString(),
-            RideType = ride.RideType?.Type,
-            DriverName = $"{ride.Driver?.Firstname} {ride.Driver?.Lastname}",
-            DriverId = ride.DriverId,
-            PassengerName = $"{ride.Passenger?.Firstname} {ride.Passenger?.Lastname}",
-            PassengerId = ride.PassengerId
+            RideStatusId = ride.RideStatus,
+            RideType = new RideTypeResponse
+            {
+                Name = ride.RideType.Type,
+                RideTypeId = ride.RideTypeId,
+            },
+            Driver = new DriverDataResponse
+            {
+                Fullname = $"{ride.Driver.User.Firstname} {ride.Driver.User.Lastname}",
+                DriverId = ride.DriverId,
+            },
+            Customer = new CustomerDataResponse
+            {
+                Fullname = $"{ride.Passenger.User.Firstname} {ride.Passenger.User.Lastname}",
+                CustomerId = ride.PassengerId
+            }
         };
 
         return response;

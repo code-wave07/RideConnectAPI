@@ -24,7 +24,7 @@ public class PassengerController : BaseController
         _passengerService = passengerService;
     }
 
-    [Authorize]
+    
     [HttpPost("book-ride", Name = "book-ride")]
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
@@ -35,7 +35,7 @@ public class PassengerController : BaseController
         return Ok(response);
     }
 
-    [Authorize]
+    
     [HttpGet("get-driver", Name = "get-driver")]
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
@@ -46,7 +46,7 @@ public class PassengerController : BaseController
         return Ok(response);
     }
 
-    [Authorize]
+    
     [HttpGet("get-ride/{id}", Name = "get-ride-details")]
     public async Task<IActionResult> GetRideDetails(string id)
     {
