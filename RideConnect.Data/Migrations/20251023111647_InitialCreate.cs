@@ -77,6 +77,22 @@ namespace RideConnect.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RideType",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(256)", nullable: false),
+                    Type = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    Price = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RideType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
@@ -105,6 +121,7 @@ namespace RideConnect.Data.Migrations
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    
                 },
                 constraints: table =>
                 {
@@ -115,12 +132,14 @@ namespace RideConnect.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    
                 });
 
             migrationBuilder.CreateTable(
@@ -144,12 +163,12 @@ namespace RideConnect.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomerPersonalDatas",
+                name: "CustomerPersonalData",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(256)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    varchar256 = table.Column<string>(name: "varchar(256)", type: "varchar(MAX)", nullable: true),
+                    Address = table.Column<string>(type: "varchar(256)", nullable: true),
                     UserId = table.Column<string>(type: "varchar(256)", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -157,9 +176,33 @@ namespace RideConnect.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomerPersonalDatas", x => x.Id);
+                    table.PrimaryKey("PK_CustomerPersonalData", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CustomerPersonalDatas_AspNetUsers_UserId",
+                        name: "FK_CustomerPersonalData_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DriverPersonalData",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(256)", nullable: false),
+                    BankName = table.Column<string>(type: "varchar(256)", nullable: false),
+                    AccountNumber = table.Column<string>(type: "varchar(256)", nullable: false),
+                    AccountName = table.Column<string>(type: "varchar(256)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(256)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverPersonalData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DriverPersonalData_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -176,6 +219,7 @@ namespace RideConnect.Data.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MenuId = table.Column<string>(type: "varchar(256)", nullable: true),
+                    
                     RoleId = table.Column<string>(type: "varchar(256)", nullable: false),
                     ClaimType = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     ClaimValue = table.Column<string>(type: "varchar(MAX)", nullable: true)
@@ -189,6 +233,7 @@ namespace RideConnect.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    
                     table.ForeignKey(
                         name: "FK_AspNetRoleClaims_Menus_MenuId",
                         column: x => x.MenuId,
@@ -226,6 +271,73 @@ namespace RideConnect.Data.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Rides",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(256)", nullable: false),
+                    From = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    Location = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    RideTypeId = table.Column<string>(type: "varchar(256)", nullable: false),
+                    DriverId = table.Column<string>(type: "varchar(256)", nullable: false),
+                    PassengerId = table.Column<string>(type: "varchar(256)", nullable: false),
+                    Price = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    RideStatus = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rides", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rides_AspNetUsers_DriverId",
+                        column: x => x.DriverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rides_AspNetUsers_PassengerId",
+                        column: x => x.PassengerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Rides_RideType_RideTypeId",
+                        column: x => x.RideTypeId,
+                        principalTable: "RideType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CarDetails",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(256)", nullable: false),
+                    NumberOfSeats = table.Column<string>(type: "varchar(MAX)", nullable: false),
+                    DlNumber = table.Column<string>(type: "varchar(50)", nullable: false),
+                    VehicleMake = table.Column<string>(type: "varchar(50)", nullable: false),
+                    CarModel = table.Column<string>(type: "varchar(50)", nullable: false),
+                    ProductionYear = table.Column<string>(type: "varchar(50)", nullable: false),
+                    CarColor = table.Column<string>(type: "varchar(10)", nullable: false),
+                    CarPlateNumber = table.Column<string>(type: "varchar(20)", nullable: false),
+                    DriverPersonalDataId = table.Column<string>(type: "varchar(256)", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarDetails_DriverPersonalData_DriverPersonalDataId",
+                        column: x => x.DriverPersonalDataId,
+                        principalTable: "DriverPersonalData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_MenuId",
                 table: "AspNetRoleClaims",
@@ -236,6 +348,7 @@ namespace RideConnect.Data.Migrations
                 table: "AspNetRoleClaims",
                 column: "RoleId");
 
+           
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -264,6 +377,10 @@ namespace RideConnect.Data.Migrations
                 table: "AspNetUserRoles",
                 column: "RoleId");
 
+            
+
+           
+
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
@@ -277,14 +394,51 @@ namespace RideConnect.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerPersonalDatas_Id",
-                table: "CustomerPersonalDatas",
+                name: "IX_CarDetails_DriverPersonalDataId",
+                table: "CarDetails",
+                column: "DriverPersonalDataId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarDetails_Id",
+                table: "CarDetails",
                 column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CustomerPersonalDatas_UserId",
-                table: "CustomerPersonalDatas",
+                name: "IX_CustomerPersonalData_Id",
+                table: "CustomerPersonalData",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerPersonalData_UserId",
+                table: "CustomerPersonalData",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverPersonalData_Id",
+                table: "DriverPersonalData",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverPersonalData_UserId",
+                table: "DriverPersonalData",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_DriverId",
+                table: "Rides",
+                column: "DriverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_PassengerId",
+                table: "Rides",
+                column: "PassengerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rides_RideTypeId",
+                table: "Rides",
+                column: "RideTypeId");
         }
 
         /// <inheritdoc />
@@ -306,13 +460,25 @@ namespace RideConnect.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CustomerPersonalDatas");
+                name: "CarDetails");
+
+            migrationBuilder.DropTable(
+                name: "CustomerPersonalData");
+
+            migrationBuilder.DropTable(
+                name: "Rides");
 
             migrationBuilder.DropTable(
                 name: "Menus");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "DriverPersonalData");
+
+            migrationBuilder.DropTable(
+                name: "RideType");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

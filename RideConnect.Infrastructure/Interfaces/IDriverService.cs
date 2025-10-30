@@ -12,4 +12,6 @@ namespace RideConnect.Infrastructure.Interfaces;
 public interface IDriverService
 {
     public Task<DriverProfileResponse> GetDriverDetails();
+
+    public Task<List<DriverProfileResponse>> GetAllDrivers();
 }

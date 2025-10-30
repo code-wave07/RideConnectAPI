@@ -10,6 +10,6 @@ public class CarDetails : BaseEntity
     public string ProductionYear { get; set; }
     public string CarColor { get; set; }
     public string CarPlateNumber { get; set; }
-    public string DriverPersonalDataId { get; set; }
-    public virtual DriverPersonalData DriverPersonalData { get; set; }
+    public string UserId { get; set; }
+    public virtual DriverPersonalData User { get; set; }
 }
