@@ -132,4 +132,51 @@ public class RideManagementService : IRideManagementService
         return response;
     }
 
+    public async Task<List<RideDetailsResponse>> GetAllRides()
+    {
+     
+        IQueryable<Ride> ridesQueryable = _rideRepo.GetQueryable(
+            include: x => x
+                .Include(r => r.Driver).ThenInclude(d => d.User)
+                .Include(r => r.Passenger).ThenInclude(p => p.User)
+                .Include(r => r.RideType)
+        );
+
+       
+        List<Ride> rides = await ridesQueryable.ToListAsync();
+
+     
+        if (!rides.Any())
+            return new List<RideDetailsResponse>();
+
+    
+        List<RideDetailsResponse> responses = rides.Select(ride => new RideDetailsResponse
+        {
+            RideId = ride.Id,
+            From = ride.From,
+            Location = ride.Location,
+            Price = ride.Price,
+            RideStatus = ride.RideStatus.ToString(),
+            RideStatusId = ride.RideStatus,
+            RideType = new RideTypeResponse
+            {
+                Name = ride.RideType?.Type ?? string.Empty,
+                RideTypeId = ride.RideTypeId,
+            },
+            Driver = new DriverDataResponse
+            {
+                Fullname = $"{ride.Driver?.User?.Firstname ?? ""} {ride.Driver?.User?.Lastname ?? ""}".Trim(),
+                DriverId = ride.DriverId
+            },
+            Customer = new CustomerDataResponse
+            {
+                Fullname = $"{ride.Passenger?.User?.Firstname ?? ""} {ride.Passenger?.User?.Lastname ?? ""}".Trim(),
+                CustomerId = ride.PassengerId
+            }
+        }).ToList();
+
+      
+        return responses;
+    }
+
 }

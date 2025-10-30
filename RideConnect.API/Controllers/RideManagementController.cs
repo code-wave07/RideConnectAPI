@@ -44,4 +44,12 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
+
+    [HttpGet("get-all-rides", Name = "get-all-rides")]
+    public async Task<IActionResult> GetAllRides()
+    {
+        var response = await _rideManagementService.GetAllRides();
+        return Ok(response);
+    }
+
 }
