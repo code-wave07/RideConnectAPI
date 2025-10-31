@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35828.75 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.API", "RideConnect.API.csproj", "{8AEF639E-31A6-48C0-9373-1750C276BF04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.API", "RideConnect.API\RideConnect.API.csproj", "{8AEF639E-31A6-48C0-9373-1750C276BF04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Data", "RideConnect.Data\RideConnect.Data.csproj", "{D360FF9B-0B52-449C-8823-3A13BD5FD57A}"
 EndProject
