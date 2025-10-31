@@ -5,11 +5,11 @@ VisualStudioVersion = 17.13.35828.75 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.API", "RideConnect.API.csproj", "{8AEF639E-31A6-48C0-9373-1750C276BF04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Data", "..\RideConnect.Data\RideConnect.Data.csproj", "{D360FF9B-0B52-449C-8823-3A13BD5FD57A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Data", "RideConnect.Data\RideConnect.Data.csproj", "{D360FF9B-0B52-449C-8823-3A13BD5FD57A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Infrastructure", "..\RideConnect.Infrastructure\RideConnect.Infrastructure.csproj", "{E4213715-F588-4922-8716-0050B4139B7F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Infrastructure", "RideConnect.Infrastructure\RideConnect.Infrastructure.csproj", "{E4213715-F588-4922-8716-0050B4139B7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Models", "..\RideConnect.Models\RideConnect.Models.csproj", "{8F344F11-BB5D-46C9-9A9D-DF314DCFDFD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideConnect.Models", "RideConnect.Models\RideConnect.Models.csproj", "{8F344F11-BB5D-46C9-9A9D-DF314DCFDFD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
