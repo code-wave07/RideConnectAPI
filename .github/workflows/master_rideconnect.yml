@@ -29,13 +29,6 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'RideConnect' # <-- your Azure App Service name
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: '${{ env.DOTNET_ROOT }}/myapp'
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -61,6 +54,13 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_37BC8A012F29478A9F5E5C69E65B1EFF }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_E067E19072A14FE995513DDE8732569B }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DBABD08AC9F44D4791F34EC462B4EC61 }}
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'RideConnect' # <-- your Azure App Service name
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: '${{ env.DOTNET_ROOT }}/myapp'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
