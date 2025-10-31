@@ -29,6 +29,13 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'RideConnect' # <-- your Azure App Service name
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: '${{ env.DOTNET_ROOT }}/myapp'
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
