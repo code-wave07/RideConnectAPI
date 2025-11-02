@@ -132,4 +132,29 @@ public class RideManagementService : IRideManagementService
         return response;
     }
 
+    public async Task<List<Ride>> GetRidesByPassenger()
+    {
+        IQueryable<Ride> RidesQueryable = _rideRepo.GetQueryable(
+            include: x => x
+                .Include(u => u.Driver)
+                .Include(u => u.RideType)
+                .Include(u => u.Passenger)
+        );
+
+        List<Ride> rides = await RidesQueryable.ToListAsync();
+
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+        if (userId == null)
+            throw new InvalidOperationException("User not authenticated.");
+
+        CustomerPersonalData passenger = await _customerPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+        if (passenger == null)
+            throw new InvalidOperationException("Passenger not found.");
+
+    }
+
+    public Task<RideDetailsResponse> GetRidesbyPassenger()
+    {
+        throw new NotImplementedException();
+    }
 }
