@@ -132,29 +132,79 @@ public class RideManagementService : IRideManagementService
         return response;
     }
 
-    public async Task<List<Ride>> GetRidesByPassenger()
-    {
-        IQueryable<Ride> RidesQueryable = _rideRepo.GetQueryable(
-            include: x => x
-                .Include(u => u.Driver)
-                .Include(u => u.RideType)
-                .Include(u => u.Passenger)
-        );
+//<<<<<<< HEAD
+    //public async Task<List<Ride>> GetRidesByPassenger()
+    //{
+    //    IQueryable<Ride> RidesQueryable = _rideRepo.GetQueryable(
+    //        include: x => x
+    //            .Include(u => u.Driver)
+    //            .Include(u => u.RideType)
+    //            .Include(u => u.Passenger)
+    //    );
 
-        List<Ride> rides = await RidesQueryable.ToListAsync();
+    //    List<Ride> rides = await RidesQueryable.ToListAsync();
 
-        string userId = _contextAccessor.HttpContext.User.GetUserId();
-        if (userId == null)
-            throw new InvalidOperationException("User not authenticated.");
+    //    string userId = _contextAccessor.HttpContext.User.GetUserId();
+    //    if (userId == null)
+    //        throw new InvalidOperationException("User not authenticated.");
 
-        CustomerPersonalData passenger = await _customerPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
-        if (passenger == null)
-            throw new InvalidOperationException("Passenger not found.");
+    //    CustomerPersonalData passenger = await _customerPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+    //    if (passenger == null)
+    //        throw new InvalidOperationException("Passenger not found.");
 
-    }
+    //}
 
     public Task<RideDetailsResponse> GetRidesbyPassenger()
     {
         throw new NotImplementedException();
     }
+//=======
+    public async Task<List<RideDetailsResponse>> GetAllRides()
+    {
+     
+        IQueryable<Ride> ridesQueryable = _rideRepo.GetQueryable(
+            include: x => x
+                .Include(r => r.Driver).ThenInclude(d => d.User)
+                .Include(r => r.Passenger).ThenInclude(p => p.User)
+                .Include(r => r.RideType)
+        );
+
+       
+        List<Ride> rides = await ridesQueryable.ToListAsync();
+
+     
+        if (!rides.Any())
+            return new List<RideDetailsResponse>();
+
+    
+        List<RideDetailsResponse> responses = rides.Select(ride => new RideDetailsResponse
+        {
+            RideId = ride.Id,
+            From = ride.From,
+            Location = ride.Location,
+            Price = ride.Price,
+            RideStatus = ride.RideStatus.ToString(),
+            RideStatusId = ride.RideStatus,
+            RideType = new RideTypeResponse
+            {
+                Name = ride.RideType?.Type ?? string.Empty,
+                RideTypeId = ride.RideTypeId,
+            },
+            Driver = new DriverDataResponse
+            {
+                Fullname = $"{ride.Driver?.User?.Firstname ?? ""} {ride.Driver?.User?.Lastname ?? ""}".Trim(),
+                DriverId = ride.DriverId
+            },
+            Customer = new CustomerDataResponse
+            {
+                Fullname = $"{ride.Passenger?.User?.Firstname ?? ""} {ride.Passenger?.User?.Lastname ?? ""}".Trim(),
+                CustomerId = ride.PassengerId
+            }
+        }).ToList();
+
+      
+        return responses;
+    }
+
+//>>>>>>> 0a3e0400632149766106d52d9e106c153e317771
 }

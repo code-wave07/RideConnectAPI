@@ -11,7 +11,7 @@ namespace RideConnect.Infrastructure.Interfaces;
 public interface IRideManagementService
 {
     public Task<string> BookRide(BookRideRequest request);
-
+    public Task<List<RideDetailsResponse>> GetAllRides();
     public Task<RideDetailsResponse> GetRideDetails(string rideId);
 
     public Task<RideDetailsResponse> GetRidesbyPassenger();
