@@ -13,4 +13,5 @@ public interface IRideManagementService
     public Task<string> BookRide(BookRideRequest request);
     public Task<List<RideDetailsResponse>> GetAllRides();
     public Task<RideDetailsResponse> GetRideDetails(string rideId);
+    public Task<string> CancelOrRejectRideAsync(string rideId);
 }

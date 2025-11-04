@@ -52,4 +52,13 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
+    
+    [HttpPost("cancel-or-reject/{rideId}")]
+    public async Task<IActionResult> CancelOrRejectRide(string rideId)
+    {
+        string message = await _rideManagementService.CancelOrRejectRideAsync(rideId);
+        return Ok(new { Success = true, Message = message });
+    }
+
+
 }
