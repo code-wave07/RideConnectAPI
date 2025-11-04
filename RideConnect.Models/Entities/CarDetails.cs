@@ -3,7 +3,7 @@
 public class CarDetails : BaseEntity
 {
     public string Id { get; set; }
-    public string NumberOfSeats { get; set; }
+    public string? NumberOfSeats { get; set; }
     public string DlNumber { get; set; }
     public string VehicleMake { get; set; }
     public string CarModel { get; set; }
