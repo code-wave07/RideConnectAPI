@@ -85,15 +85,13 @@ builder.Services.RegisterServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "ResourceEdge v4");
-        c.InjectStylesheet("/css/swagger-dark-theme.css");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ResourceEdge v4");
+    c.InjectStylesheet("/css/swagger-dark-theme.css");
+});
 
 app.UseHttpsRedirection();
 
