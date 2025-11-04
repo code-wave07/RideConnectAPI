@@ -83,6 +83,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder => {
         "http://localhost:3003",
         "http://localhost:3004",
         "http://localhost:5500",
+        "http://127.0.0.1:5500",
         "http://localhost:3005" )
         
         .AllowCredentials();
