@@ -81,8 +81,8 @@ public class AuthenticationService : IAuthenticationService
         if (existingUser != null)
             throw new InvalidOperationException("Username already exist");
 
-        if (String.Equals(request.Password, request.ConfirmPassword) == false)
-            throw new InvalidOperationException("Password and Confirm Password must match");
+        //if (String.Equals(request.Password, request.ConfirmPassword) == false)
+        //    throw new InvalidOperationException("Password and Confirm Password must match");
 
         ApplicationUser newUser = new ApplicationUser
         {
@@ -116,8 +116,8 @@ public class AuthenticationService : IAuthenticationService
         if (existingUser != null)
             throw new InvalidOperationException("Username already exist");
 
-        if (String.Equals(request.Password, request.ConfirmPassword) == false)
-            throw new InvalidOperationException("Password and Confirm Password must match");
+        //if (String.Equals(request.Password, request.ConfirmPassword) == false)
+        //    throw new InvalidOperationException("Password and Confirm Password must match");
 
         ApplicationUser newUser = new ApplicationUser
         {
@@ -137,9 +137,9 @@ public class AuthenticationService : IAuthenticationService
         DriverPersonalData driverPersonalData = new DriverPersonalData
         {
             UserId = newUser.Id,
-            BankName = request.BankName,
-            AccountNumber = request.AccountNumber,
-            AccountName = request.AccountName
+            //BankName = request.BankName,
+            //AccountNumber = request.AccountNumber,
+            //AccountName = request.AccountName
             
         };
         _driverPersonalDataRepo.Add(driverPersonalData);
@@ -147,7 +147,7 @@ public class AuthenticationService : IAuthenticationService
         CarDetails carDetails = new CarDetails
         {
             UserId = driverPersonalData.Id,//update to driver personal data
-            NumberOfSeats = request.NumberOfSeats,
+            //NumberOfSeats = request.NumberOfSeats,
             DlNumber = request.DlNumber,
             VehicleMake = request.VehicleMake,
             CarModel = request.CarModel,
