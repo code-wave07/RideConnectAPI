@@ -13,7 +13,7 @@ namespace RideConnect.API.Controllers;
 [Route("api/[controller]")]
 //[Authorize(Policy = "Authorization")]
 [ApiController]
-[SwaggerTag("Authentication operations")]
+[SwaggerTag("Driver Operations")]
 
 public class DriverController : BaseController
 {
@@ -53,6 +53,13 @@ public class DriverController : BaseController
     public async Task<IActionResult> GetDriverProfile(string id)
     {
         DriverProfileResponse response = await _driverService.GetDriver(id);
+        return Ok(response);
+    }
+
+    [HttpPost("accept-ride/{rideId}")]
+    public async Task<IActionResult> AcceptRide(string rideId)
+    {
+        string response = await _driverService.AcceptRide(rideId);
         return Ok(response);
     }
 

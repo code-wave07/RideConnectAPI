@@ -22,6 +22,7 @@ namespace RideConnect.Infrastructure.Implementation;
 public class DriverService : IDriverService
 {
     private readonly IRepository<ApplicationUser> _applicationUserRepo;
+    private readonly IRepository<Ride> _rideRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
     private readonly IRepository<CarDetails> _carDetails;
@@ -39,6 +40,7 @@ public class DriverService : IDriverService
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
         _contextAccessor = _serviceFactory.GetService<IHttpContextAccessor>();
         _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _rideRepo = _unitOfWork.GetRepository<Ride>();
     }
 
     public async Task<DriverProfileResponse> GetDriverDetails()
@@ -162,5 +164,42 @@ public class DriverService : IDriverService
 
         return response;
     }
+
+    public async Task<string> AcceptRide(string rideId)
+    {
+        // Get logged-in driver's user ID
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+            throw new InvalidOperationException("User not authenticated.");
+
+        // Get the driver’s personal data (to confirm they’re registered as a driver)
+        var driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+        if (driver == null)
+            throw new InvalidOperationException("Driver profile not found.");
+
+        // Find the ride
+        Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
+        if (ride == null)
+            throw new InvalidOperationException("Ride not found.");
+
+        // Verify that the ride is pending
+        if (ride.RideStatus != RideStatus.Pending)
+            throw new InvalidOperationException("Only pending rides can be accepted.");
+
+        // Make sure this driver is assigned to the ride
+        if (ride.DriverId != driver.Id)
+            throw new UnauthorizedAccessException("You are not assigned to this ride.");
+
+        // Update status
+        ride.RideStatus = RideStatus.InProgress; // or RideStatus.Accepted if you have it
+        ride.UpdatedAt = DateTime.Now;
+
+        _rideRepo.Update(ride);
+        await _unitOfWork.SaveChangesAsync();
+
+        return $"Ride {ride.Id} has been accepted successfully.";
+    }
+
 
 }
