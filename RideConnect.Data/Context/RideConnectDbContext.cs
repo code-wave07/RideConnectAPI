@@ -93,5 +93,19 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
        
             b.HasIndex(x => x.Id);
         });
+
+        modelBuilder.Entity<RideType>().HasData(
+        new RideType
+        {
+            Id = "1",
+            Type = "Solo",
+            Description = "Private ride, one passenger only"
+        },
+        new RideType
+        {
+            Id = "2",
+            Type = "Shared",
+            Description = "Ride shared with other passengers"
+        });
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251105015118_Kachi@midnight")]
+    partial class Kachimidnight
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

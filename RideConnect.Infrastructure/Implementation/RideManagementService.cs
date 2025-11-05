@@ -277,7 +277,7 @@ public class RideManagementService : IRideManagementService
         if (ride.Driver?.UserId != UserId)
             throw new UnauthorizedAccessException("You are not authorized to reject this ride.");
 
-        if (ride.RideStatus != RideStatus.InProgress)
+        if (ride.RideStatus != RideStatus.Pending)
             throw new InvalidOperationException("Ride cannot be rejected at this stage.");
 
         ride.RideStatus = RideStatus.Rejected;

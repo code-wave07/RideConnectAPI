@@ -1,11 +1,14 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RideConnect.Data.Implementation;
+using RideConnect.Data.Interfaces;
+using RideConnect.Infrastructure.Implementation;
 using RideConnect.Infrastructure.Interfaces;
+using RideConnect.Models.Entities;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Response;
 using Swashbuckle.AspNetCore.Annotations;
-using RideConnect.Infrastructure.Implementation;
 
 namespace RideConnect.API.Controllers;
 
@@ -18,10 +21,12 @@ namespace RideConnect.API.Controllers;
 public class RideManagementController : BaseController
 {
     private readonly IRideManagementService _rideManagementService;
+    private readonly IRepository<RideType> _rideTypeRepo;
 
-    public RideManagementController(IRideManagementService rideManagementService)
+    public RideManagementController(IRideManagementService rideManagementService, IUnitOfWork unitOfWork)
     {
         _rideManagementService = rideManagementService;
+        _rideTypeRepo = unitOfWork.GetRepository<RideType>();
     }
 
 
@@ -74,5 +79,11 @@ public class RideManagementController : BaseController
         return Ok(new { message = response });
     }
 
+    [HttpGet("ride-types")]
+    public async Task<IActionResult> GetRideTypes()
+    {
+        var rideTypes = await _rideTypeRepo.GetAllAsync();
+        return Ok(rideTypes);
+    }
 
 }
