@@ -53,11 +53,25 @@ public class RideManagementController : BaseController
     }
 
     
-    [HttpPost("cancel-or-reject/{rideId}")]
-    public async Task<IActionResult> CancelOrRejectRide(string rideId)
+    [HttpPost("cancel-ride")]
+    public async Task<IActionResult> CancelRide([FromBody] CancelRideRequest request)
     {
-        string message = await _rideManagementService.CancelOrRejectRideAsync(rideId);
-        return Ok(new { Success = true, Message = message });
+        if (request == null || string.IsNullOrEmpty(request.RideId))
+            return BadRequest("Ride ID is required.");
+
+        string response = await _rideManagementService.CancelRide(request.RideId);
+        return Ok(new { message = response });
+    }
+
+   
+    [HttpPost("reject-ride")]
+    public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
+    {
+        if (request == null || string.IsNullOrEmpty(request.RideId))
+            return BadRequest("Ride ID is required.");
+
+        string response = await _rideManagementService.RejectRide(request.RideId);
+        return Ok(new { message = response });
     }
 
 
