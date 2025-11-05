@@ -1,11 +1,14 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RideConnect.Data.Implementation;
+using RideConnect.Data.Interfaces;
+using RideConnect.Infrastructure.Implementation;
 using RideConnect.Infrastructure.Interfaces;
+using RideConnect.Models.Entities;
 using RideConnect.Models.Requests;
 using RideConnect.Models.Response;
 using Swashbuckle.AspNetCore.Annotations;
-using RideConnect.Infrastructure.Implementation;
 
 namespace RideConnect.API.Controllers;
 
@@ -18,6 +21,7 @@ namespace RideConnect.API.Controllers;
 public class RideManagementController : BaseController
 {
     private readonly IRideManagementService _rideManagementService;
+  
 
     public RideManagementController(IRideManagementService rideManagementService)
     {
@@ -52,13 +56,27 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
-    
-    [HttpPost("cancel-or-reject/{rideId}")]
-    public async Task<IActionResult> CancelOrRejectRide(string rideId)
+
+    [HttpPost("cancel-ride")]
+    public async Task<IActionResult> CancelRide([FromBody] CancelRideRequest request)
     {
-        string message = await _rideManagementService.CancelOrRejectRideAsync(rideId);
-        return Ok(new { Success = true, Message = message });
+        string response = await _rideManagementService.CancelRide(request.RideId);
+        return Ok(response);
     }
 
 
+    [HttpPost("reject-ride")]
+    public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
+    {
+        string response = await _rideManagementService.RejectRide(request.RideId);
+        return Ok(response);
+    }
+
+
+    [HttpGet("ride-types")]
+    public async Task<IActionResult> GetRideTypes()
+    {
+        var rideTypes = await _rideManagementService.GetRideTypes();
+        return Ok(rideTypes);
+    }
 }

@@ -16,4 +16,6 @@ public interface IDriverService
     public Task<List<DriverProfileResponse>> GetAllDrivers();
 
     public Task<DriverProfileResponse> GetDriver(string driverId);
+
+    public Task<string> AcceptRide(string rideId);
 }
