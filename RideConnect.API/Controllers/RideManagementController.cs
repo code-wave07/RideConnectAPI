@@ -48,14 +48,6 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
-//<<<<<<< HEAD
-    [HttpGet("get-ride-by-passenger", Name = "get-ride-by-passenger")]
-    public async Task<IActionResult> GetRidesByPassenger()
-    {
-        RideDetailsResponse response = await _rideManagementService.GetRidesbyPassenger();
-        return Ok(response);
-    }
-//=======
 
     [HttpGet("get-all-rides", Name = "get-all-rides")]
     public async Task<IActionResult> GetAllRides()
@@ -64,17 +56,24 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
-//<<<<<<< HEAD
-//>>>>>>> 0a3e0400632149766106d52d9e106c153e317771
-//=======
-    
-    [HttpPost("cancel-or-reject/{rideId}")]
-    public async Task<IActionResult> CancelOrRejectRide(string rideId)
+
+    [HttpPost("cancel-ride")]
+    public async Task<IActionResult> CancelRide([FromBody] CancelRideRequest request)
+    {
+        string response = await _rideManagementService.CancelRide(request.RideId);
+        return Ok(response);
+    }
+
+
+    [HttpPost("reject-ride")]
+    public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
     {
         string response = await _rideManagementService.RejectRide(request.RideId);
         return Ok(response);
     }
 
+
+ 
 
     [HttpGet("ride-types")]
     public async Task<IActionResult> GetRideTypes()

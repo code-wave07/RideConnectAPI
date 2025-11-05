@@ -77,7 +77,7 @@ builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder => {
     builder.AllowAnyMethod()
         .AllowAnyHeader()
         .WithOrigins(
-        "https://ride-connect-pearl.vercel.app/",
+        "https://ride-connect-pearl.vercel.app",
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:3002",
