@@ -73,6 +73,23 @@ builder.Services.AddAuthorization(cfg =>
     cfg.AddPolicy("Authorization", policy => policy.Requirements.Add(new AuthorizationRequirment()));
 });
 
+builder.Services.AddCors(o => o.AddPolicy("AllowAll", builder => {
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins(
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://localhost:3002",
+        "http://localhost:3003",
+        "http://localhost:3004",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:3005" )
+        
+        .AllowCredentials();
+
+}));
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddControllers();
@@ -92,6 +109,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ResourceEdge v4");
     c.InjectStylesheet("/css/swagger-dark-theme.css");
 });
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 

@@ -206,5 +206,70 @@ public class RideManagementService : IRideManagementService
         return responses;
     }
 
+//<<<<<<< HEAD
 //>>>>>>> 0a3e0400632149766106d52d9e106c153e317771
+    public async Task<string> CancelOrRejectRideAsync(string rideId)
+    {
+        if (string.IsNullOrEmpty(rideId))
+            throw new ArgumentException("Ride ID cannot be null or empty.");
+
+        // Get logged-in user ID
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+        if (userId == null)
+            throw new InvalidOperationException("User not authenticated.");
+
+        // Get the user's role/type
+        ApplicationUser user = await _applicationUserRepo.GetSingleByAsync(x => x.Id == userId);
+        if (user == null)
+            throw new InvalidOperationException("User not found.");
+
+        // Fetch the ride
+        Ride ride = await _rideRepo.GetSingleByAsync(
+            x => x.Id == rideId,
+            include: x => x.Include(r => r.Driver).Include(r => r.Passenger)
+        );
+
+        if (ride == null)
+            throw new InvalidOperationException("Ride not found.");
+
+        // Prevent invalid operations
+        if (ride.RideStatus == RideStatus.Completed)
+            throw new InvalidOperationException("Completed rides cannot be cancelled or rejected.");
+
+        if (ride.RideStatus == RideStatus.Cancelled)
+            throw new InvalidOperationException("Ride is already cancelled or rejected.");
+
+        // Handle based on user type
+        if (user.UserType == UserType.Customer)
+        {
+            // Passenger cancellation
+            if (ride.PassengerId != userId)
+                throw new InvalidOperationException("You can only cancel your own rides.");
+
+            ride.RideStatus = RideStatus.Cancelled;
+            _rideRepo.Update(ride);
+
+            await _unitOfWork.SaveChangesAsync();
+            return $"Ride {ride.Id} cancelled by passenger.";
+        }
+        else if (user.UserType == UserType.Driver)
+        {
+            // Driver rejection
+            if (ride.DriverId != userId)
+                throw new InvalidOperationException("You can only reject rides assigned to you.");
+
+            ride.RideStatus = RideStatus.Rejected;
+            _rideRepo.Update(ride);
+
+            await _unitOfWork.SaveChangesAsync();
+            return $"Ride {ride.Id} rejected by driver.";
+        }
+        else
+        {
+            throw new InvalidOperationException("User type not allowed to perform this action.");
+        }
+    }
+
+
+//>>>>>>> 1932df1cda457423c8e98902768639390e8d957d
 }
