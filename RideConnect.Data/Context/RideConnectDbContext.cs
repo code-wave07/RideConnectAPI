@@ -52,8 +52,12 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
+//<<<<<<< HEAD
+            b.Property(x => x.Address).HasColumnName("varchar(256)");
+//=======
             b.Property(x => x.Address).HasColumnType("varchar(256)");
             b.Property(x => x.DateOfBirth);
+//>>>>>>> 406ae155329c130344506782b1989dbd47bfa679
             b.HasIndex(x => x.Id);
         });
 
@@ -77,6 +81,7 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.Property(e => e.Type).HasColumnType("varchar(50)");
         });
 
 

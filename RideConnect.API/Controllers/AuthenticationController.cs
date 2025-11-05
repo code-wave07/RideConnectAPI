@@ -47,7 +47,7 @@ public class AuthenticationController : BaseController
         return Ok(response);
     }
 
-    [AllowAnonymous]
+    [AllowAnonymous]    
     [HttpPost("login", Name = "login")]
     //[SwaggerOperation(Summary = "Login User")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "SuccessfullyLog in user", Type = typeof(SuccessResponse))]
