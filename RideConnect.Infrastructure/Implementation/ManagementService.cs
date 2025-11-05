@@ -1,6 +1,7 @@
 ﻿
 using Azure.Core;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RideConnect.Data.Interfaces;
 using RideConnect.Infrastructure.Interfaces;
 using RideConnect.Models.Entities;
@@ -15,6 +16,7 @@ public class ManagementService : IManagementService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
     private readonly IRepository<RideType> _rideTypeRepo;
+    private readonly IRepository<Ride> _rideRepo;
 
     public ManagementService(IServiceFactory serviceFactory, UserManager<ApplicationUser> userManager)
     {
@@ -68,5 +70,18 @@ public class ManagementService : IManagementService
         await _unitOfWork.SaveChangesAsync();
 
         return "Successfully created.";
+    }
+
+    public async Task<string> DeleteRideType(string rideTypeId)
+    {
+        RideType existingRideType = await _rideTypeRepo.GetSingleByAsync();
+
+        if (existingRideType == null)
+            throw new InvalidOperationException("Ride Type not found");
+
+        _rideTypeRepo.Delete(existingRideType);
+        await _unitOfWork.SaveChangesAsync();
+
+        return "Successfully Deleted.";
     }
 }

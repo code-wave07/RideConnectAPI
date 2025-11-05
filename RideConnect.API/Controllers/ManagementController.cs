@@ -32,4 +32,13 @@ public class ManagementController : BaseController
         string response = await _managementService.AddOrUpdateRideType(request);
         return Ok(response);
     }
+
+    [AllowAnonymous]
+    [HttpDelete("delete-ride-type", Name = "delete-ride-type")]
+
+    public async Task<IActionResult> DeleteRideType(string rideTypeId)
+    {
+        string response = await _managementService.DeleteRideType(rideTypeId);
+        return Ok(rideTypeId);
+    }
 }
