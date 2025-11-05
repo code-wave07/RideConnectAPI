@@ -22,6 +22,7 @@ namespace RideConnect.Infrastructure.Implementation;
 public class DriverService : IDriverService
 {
     private readonly IRepository<ApplicationUser> _applicationUserRepo;
+    private readonly IRepository<Ride> _rideRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IServiceFactory _serviceFactory;
     private readonly IRepository<CarDetails> _carDetails;
@@ -39,6 +40,7 @@ public class DriverService : IDriverService
         _customerPersonalDataRepo = _unitOfWork.GetRepository<CustomerPersonalData>();
         _contextAccessor = _serviceFactory.GetService<IHttpContextAccessor>();
         _driverPersonalDataRepo = _unitOfWork.GetRepository<DriverPersonalData>();
+        _rideRepo = _unitOfWork.GetRepository<Ride>();
     }
 
     public async Task<DriverProfileResponse> GetDriverDetails()
@@ -80,5 +82,124 @@ public class DriverService : IDriverService
 
         return response;
     }
+
+    public async Task<List<DriverProfileResponse>> GetAllDrivers()
+    {
+
+        IQueryable<DriverPersonalData> driversQueryable = _driverPersonalDataRepo.GetQueryable(
+            include: x => x
+                .Include(u => u.User)
+                .Include(x => x.CarDetails)
+        );
+
+        List<DriverPersonalData> drivers = await driversQueryable.ToListAsync();
+
+        if (!drivers.Any())
+            return new List<DriverProfileResponse>();
+
+        //response details
+        List<DriverProfileResponse> responses = drivers.Select(driver => new DriverProfileResponse
+        {
+            FullName = $"{driver.User.Firstname} {driver.User.Lastname}",
+            EmailAddress = driver.User.Email ?? string.Empty,
+            Username = driver.User.UserName ?? string.Empty,
+            MobileNumber = driver.User.PhoneNumber ?? string.Empty,
+            UserType = driver.User.UserType.GetStringValue(),
+            UserTypeId = driver.User.UserType,
+            DriverPersonalDataResponse = new DriverPersonalDataResponse
+            {
+                Id = driver.Id,
+                CarDetails = new DriverCarDetailsResponse
+                {
+                    DlNumber = driver.CarDetails?.DlNumber ?? string.Empty,
+                    VehicleMake = driver.CarDetails?.VehicleMake ?? string.Empty,
+                    CarModel = driver.CarDetails?.CarModel ?? string.Empty,
+                    ProductionYear = driver.CarDetails?.ProductionYear ?? string.Empty,
+                    CarColor = driver.CarDetails?.CarColor ?? string.Empty,
+                    CarPlateNumber = driver.CarDetails?.CarPlateNumber ?? string.Empty
+                }
+            }
+        }).ToList();
+
+        return responses;
+    }
+
+
+    public async Task<DriverProfileResponse> GetDriver(string id)
+    {
+
+        ApplicationUser driver = await _applicationUserRepo.GetSingleByAsync(
+            x => x.Id == id,
+            include: x => x
+                .Include(u => u.DriverPersonalData)
+                .ThenInclude(c => c.CarDetails)
+        );
+
+        if (driver == null)
+            throw new InvalidOperationException("Driver not found");
+
+        //response details
+        DriverProfileResponse response = new DriverProfileResponse
+        {
+            FullName = $"{driver.Firstname} {driver.Lastname}",
+            EmailAddress = driver.Email ?? string.Empty,
+            Username = driver.UserName ?? string.Empty,
+            MobileNumber = driver.PhoneNumber ?? string.Empty,
+            UserType = driver.UserType.GetStringValue(),
+            UserTypeId = driver.UserType,
+            DriverPersonalDataResponse = new DriverPersonalDataResponse
+            {
+                CarDetails = new DriverCarDetailsResponse
+                {
+                    DlNumber = driver.DriverPersonalData.CarDetails?.DlNumber!,
+                    VehicleMake = driver.DriverPersonalData.CarDetails?.VehicleMake!,
+                    CarModel = driver.DriverPersonalData.CarDetails?.CarModel!,
+                    ProductionYear = driver.DriverPersonalData.CarDetails?.ProductionYear!,
+                    CarColor = driver.DriverPersonalData.CarDetails?.CarColor!,
+                    CarPlateNumber = driver.DriverPersonalData.CarDetails?.CarPlateNumber!
+                }
+            }
+
+        };
+
+        return response;
+    }
+
+    public async Task<string> AcceptRide(string rideId)
+    {
+        // Get logged-in driver's user ID
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+            throw new InvalidOperationException("User not authenticated.");
+
+        // Get the driver’s personal data (to confirm they’re registered as a driver)
+        var driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+        if (driver == null)
+            throw new InvalidOperationException("Driver profile not found.");
+
+        // Find the ride
+        Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
+        if (ride == null)
+            throw new InvalidOperationException("Ride not found.");
+
+        // Verify that the ride is pending
+        if (ride.RideStatus != RideStatus.Pending)
+            throw new InvalidOperationException("Only pending rides can be accepted.");
+
+        // Make sure this driver is assigned to the ride
+        if (ride.DriverId != driver.Id)
+            throw new UnauthorizedAccessException("You are not assigned to this ride.");
+
+        // Update status
+        ride.RideStatus = RideStatus.InProgress; // or RideStatus.Accepted if you have it
+        ride.UpdatedAt = DateTime.Now;
+
+        _rideRepo.Update(ride);
+        await _unitOfWork.SaveChangesAsync();
+
+        return $"Ride {ride.Id} has been accepted successfully.";
+    }
+
 
 }

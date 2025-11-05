@@ -18,5 +18,7 @@ public static class MiddlewareExtension
         services.AddTransient<IServiceFactory, ServiceFactory>();
         services.AddTransient<IUnitOfWork, UnitOfWork<RideConnectDbContext>>();
         services.AddTransient<IJWTAuthenticator, JWTAuthenticator>();
+        services.AddTransient<IPassengerService, PassengerService>();
+        services.AddTransient<IRideManagementService, RideManagementService>();
     }
 }

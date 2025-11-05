@@ -333,6 +333,9 @@ namespace RideConnect.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("NumberOfSeats")
+                        .HasColumnType("varchar(MAX)");
+
                     b.Property<string>("ProductionYear")
                         .IsRequired()
                         .HasColumnType("varchar(50)");
@@ -352,9 +355,10 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.ToTable("CarDetails", (string)null);
+                    b.ToTable("CarDetails");
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.CustomerPersonalData", b =>
@@ -388,7 +392,45 @@ namespace RideConnect.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CustomerPersonalData", (string)null);
+                    b.ToTable("CustomerPersonalData");
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("AccountName")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BankName")
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("DriverPersonalData");
                 });
 
             modelBuilder.Entity("RideConnect.Models.Entities.Menu", b =>
@@ -417,7 +459,106 @@ namespace RideConnect.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Menus", (string)null);
+                    b.ToTable("Menus");
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.Ride", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DriverId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("From")
+                        .IsRequired()
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("PassengerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Price")
+                        .IsRequired()
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<int>("RideStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RideTypeId")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.HasIndex("PassengerId");
+
+                    b.HasIndex("RideTypeId");
+
+                    b.ToTable("Rides");
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.RideType", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(MAX)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RideType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Active = true,
+                            CreatedAt = new DateTime(2025, 11, 5, 2, 51, 17, 104, DateTimeKind.Local).AddTicks(596),
+                            Description = "Private ride, one passenger only",
+                            Type = "Solo"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            Active = true,
+                            CreatedAt = new DateTime(2025, 11, 5, 2, 51, 17, 104, DateTimeKind.Local).AddTicks(611),
+                            Description = "Ride shared with other passengers",
+                            Type = "Shared"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -509,9 +650,9 @@ namespace RideConnect.Data.Migrations
 
             modelBuilder.Entity("RideConnect.Models.Entities.CarDetails", b =>
                 {
-                    b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("RideConnect.Models.Entities.DriverPersonalData", "User")
+                        .WithOne("CarDetails")
+                        .HasForeignKey("RideConnect.Models.Entities.CarDetails", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -529,11 +670,61 @@ namespace RideConnect.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+                {
+                    b.HasOne("RideConnect.Models.Entities.ApplicationUser", "User")
+                        .WithOne("DriverPersonalData")
+                        .HasForeignKey("RideConnect.Models.Entities.DriverPersonalData", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.Ride", b =>
+                {
+                    b.HasOne("RideConnect.Models.Entities.DriverPersonalData", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RideConnect.Models.Entities.CustomerPersonalData", "Passenger")
+                        .WithMany()
+                        .HasForeignKey("PassengerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RideConnect.Models.Entities.RideType", "RideType")
+                        .WithMany()
+                        .HasForeignKey("RideTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
+
+                    b.Navigation("Passenger");
+
+                    b.Navigation("RideType");
+                });
+
             modelBuilder.Entity("RideConnect.Models.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("DriverPersonalData")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RideConnect.Models.Entities.DriverPersonalData", b =>
+                {
+                    b.Navigation("CarDetails")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

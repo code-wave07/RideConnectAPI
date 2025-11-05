@@ -13,7 +13,7 @@ namespace RideConnect.API.Controllers;
 [Route("api/[controller]")]
 //[Authorize(Policy = "Authorization")]
 [ApiController]
-[SwaggerTag("Authentication operations")]
+[SwaggerTag("Driver Operations")]
 
 public class DriverController : BaseController
 {
@@ -24,6 +24,7 @@ public class DriverController : BaseController
         _driverService = driverService;
     }
 
+    [Authorize]
     [HttpGet("get-driver-profile", Name = "get-driver-profile")]
     //[SwaggerOperation(Summary = "Registers Customer")]
     //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
@@ -33,4 +34,33 @@ public class DriverController : BaseController
         DriverProfileResponse response = await _driverService.GetDriverDetails();
         return Ok(response);
     }
+
+    [HttpGet("get-all-drivers", Name = "get-all-drivers")]
+    //[SwaggerOperation(Summary = "Registers Customer")]
+    //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Data", Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetAllDrivers()
+    {
+        List<DriverProfileResponse> response = await _driverService.GetAllDrivers();
+        return Ok(response);
+    }
+
+
+    [HttpGet("get-driver", Name = "get-driver")]
+    //[SwaggerOperation(Summary = "Registers Customer")]
+    //[SwaggerResponse(StatusCodes.Status200OK, Description = "Successfully registered Customer", Type = typeof(SuccessResponse))]
+    //[SwaggerResponse(StatusCodes.Status400BadRequest, Description = "Invalid Data", Type = typeof(ErrorResponse))]
+    public async Task<IActionResult> GetDriverProfile(string id)
+    {
+        DriverProfileResponse response = await _driverService.GetDriver(id);
+        return Ok(response);
+    }
+
+    [HttpPost("accept-ride/{rideId}")]
+    public async Task<IActionResult> AcceptRide(string rideId)
+    {
+        string response = await _driverService.AcceptRide(rideId);
+        return Ok(response);
+    }
+
 }

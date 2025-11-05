@@ -65,6 +65,10 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
         {
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
+            b.HasIndex(x => x.Id);
+            b.Property(x => x.BankName).HasColumnType("varchar(256)");
+            b.Property(x => x.AccountNumber).HasColumnType("varchar(256)");
+            b.Property(x => x.AccountName).HasColumnType("varchar(256)");
         });
 
         modelBuilder.Entity<Ride>(b =>
@@ -93,6 +97,20 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
             b.Property(e => e.CarPlateNumber).HasColumnType("varchar(20)");
        
             b.HasIndex(x => x.Id);
+        });
+
+        modelBuilder.Entity<RideType>().HasData(
+        new RideType
+        {
+            Id = "1",
+            Type = "Solo",
+            Description = "Private ride, one passenger only"
+        },
+        new RideType
+        {
+            Id = "2",
+            Type = "Shared",
+            Description = "Ride shared with other passengers"
         });
     }
 }

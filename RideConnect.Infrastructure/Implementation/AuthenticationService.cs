@@ -81,8 +81,8 @@ public class AuthenticationService : IAuthenticationService
         if (existingUser != null)
             throw new InvalidOperationException("Username already exist");
 
-        if (String.Equals(request.Password, request.ConfirmPassword) == false)
-            throw new InvalidOperationException("Password and Confirm Password must match");
+        //if (String.Equals(request.Password, request.ConfirmPassword) == false)
+        //    throw new InvalidOperationException("Password and Confirm Password must match");
 
         ApplicationUser newUser = new ApplicationUser
         {
@@ -99,6 +99,13 @@ public class AuthenticationService : IAuthenticationService
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()?.Description}");
 
+        CustomerPersonalData customerData = new CustomerPersonalData
+        {
+            UserId = newUser.Id,
+        };
+        _customerPersonalDataRepo.Add(customerData);
+        await _unitOfWork.SaveChangesAsync();
+
         return $"{newUser.UserType} Created Successfully";
     }
 
@@ -109,8 +116,8 @@ public class AuthenticationService : IAuthenticationService
         if (existingUser != null)
             throw new InvalidOperationException("Username already exist");
 
-        if (String.Equals(request.Password, request.ConfirmPassword) == false)
-            throw new InvalidOperationException("Password and Confirm Password must match");
+        //if (String.Equals(request.Password, request.ConfirmPassword) == false)
+        //    throw new InvalidOperationException("Password and Confirm Password must match");
 
         ApplicationUser newUser = new ApplicationUser
         {
@@ -130,12 +137,17 @@ public class AuthenticationService : IAuthenticationService
         DriverPersonalData driverPersonalData = new DriverPersonalData
         {
             UserId = newUser.Id,
+            //BankName = request.BankName,
+            //AccountNumber = request.AccountNumber,
+            //AccountName = request.AccountName
             
         };
+        _driverPersonalDataRepo.Add(driverPersonalData);
 
         CarDetails carDetails = new CarDetails
         {
-            Id = driverPersonalData.Id,//update to driver personal data
+            UserId = driverPersonalData.Id,//update to driver personal data
+            //NumberOfSeats = request.NumberOfSeats,
             DlNumber = request.DlNumber,
             VehicleMake = request.VehicleMake,
             CarModel = request.CarModel,
@@ -144,8 +156,8 @@ public class AuthenticationService : IAuthenticationService
             CarPlateNumber = request.CarPlateNumber
         };
 
+       
         _carDetailsRepo.Add(carDetails);
-        _driverPersonalDataRepo.Add(driverPersonalData);
         await _unitOfWork.SaveChangesAsync();
 
         return $"{newUser.UserType} registered successfully.";
