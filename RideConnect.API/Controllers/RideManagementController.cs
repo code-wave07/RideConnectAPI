@@ -21,12 +21,11 @@ namespace RideConnect.API.Controllers;
 public class RideManagementController : BaseController
 {
     private readonly IRideManagementService _rideManagementService;
-    private readonly IRepository<RideType> _rideTypeRepo;
+  
 
-    public RideManagementController(IRideManagementService rideManagementService, IUnitOfWork unitOfWork)
+    public RideManagementController(IRideManagementService rideManagementService)
     {
         _rideManagementService = rideManagementService;
-        _rideTypeRepo = unitOfWork.GetRepository<RideType>();
     }
 
 
@@ -57,33 +56,27 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
-    
+
     [HttpPost("cancel-ride")]
     public async Task<IActionResult> CancelRide([FromBody] CancelRideRequest request)
     {
-        if (request == null || string.IsNullOrEmpty(request.RideId))
-            return BadRequest("Ride ID is required.");
-
         string response = await _rideManagementService.CancelRide(request.RideId);
-        return Ok(new { message = response });
+        return Ok(response);
     }
 
-   
+
     [HttpPost("reject-ride")]
     public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
     {
-        if (request == null || string.IsNullOrEmpty(request.RideId))
-            return BadRequest("Ride ID is required.");
-
         string response = await _rideManagementService.RejectRide(request.RideId);
-        return Ok(new { message = response });
+        return Ok(response);
     }
+
 
     [HttpGet("ride-types")]
     public async Task<IActionResult> GetRideTypes()
     {
-        var rideTypes = await _rideTypeRepo.GetAllAsync();
+        var rideTypes = await _rideManagementService.GetRideTypes();
         return Ok(rideTypes);
     }
-
 }

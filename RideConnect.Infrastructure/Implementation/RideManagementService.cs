@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using RideConnect.Data.Interfaces;
 using RideConnect.Infrastructure.Infrastructure;
@@ -245,6 +246,9 @@ public class RideManagementService : IRideManagementService
     {
         string UserId = _contextAccessor.HttpContext.User.GetUserId();
 
+        if (string.IsNullOrEmpty(rideId))
+            throw new ArgumentException("Ride ID is required.");
+
         Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
         if (ride == null)
             throw new InvalidOperationException("Ride not found.");
@@ -267,27 +271,50 @@ public class RideManagementService : IRideManagementService
 
     public async Task<string> RejectRide(string rideId)
     {
-        string UserId = _contextAccessor.HttpContext.User.GetUserId();
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
 
-        var ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
+        if (string.IsNullOrEmpty(rideId))
+            throw new ArgumentException("Ride ID is required.");
+
+        Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
         if (ride == null)
             throw new InvalidOperationException("Ride not found.");
 
-        // Check that current user is the assigned driver
-        if (ride.Driver?.UserId != UserId)
+        // Verify that current user is the driver for this ride
+        if (ride.Driver?.UserId != userId)
             throw new UnauthorizedAccessException("You are not authorized to reject this ride.");
 
+        // Validate ride status
         if (ride.RideStatus != RideStatus.Pending)
             throw new InvalidOperationException("Ride cannot be rejected at this stage.");
 
+        // Update status
         ride.RideStatus = RideStatus.Rejected;
         ride.UpdatedAt = DateTime.Now;
 
         _rideRepo.Update(ride);
         await _unitOfWork.SaveChangesAsync();
 
-        return $"Ride {ride.Id} has been rejected.";
+        return $"Ride {ride.Id} has been rejected successfully.";
     }
 
+
+    public async Task<List<RTResponse>> GetRideTypes()
+    {
+        IEnumerable<RideType> rideTypesEnumerable = await _rideTypeRepo.GetAllAsync();
+        List<RideType> rideTypes = rideTypesEnumerable.ToList();
+
+        if (!rideTypes.Any())
+            throw new InvalidOperationException("No ride types found.");
+
+        List<RTResponse> response = rideTypes.Select(rideType => new RTResponse
+        {
+            RideTypeId = rideType.Id,
+            Name = rideType.Type,
+            Description = rideType.Description ?? string.Empty
+        }).ToList();
+
+        return response;
+    }
 
 }

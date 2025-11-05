@@ -16,4 +16,5 @@ public interface IRideManagementService
     //public Task<string> CancelOrRejectRideAsync(string rideId);
     public Task<string> RejectRide(string rideId);
     public  Task<string> CancelRide(string rideId);
+    public Task<List<RTResponse>> GetRideTypes();
 }
