@@ -174,7 +174,7 @@ public class DriverService : IDriverService
             throw new InvalidOperationException("User not authenticated.");
 
         // Get the driver’s personal data (to confirm they’re registered as a driver)
-        var driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+        DriverPersonalData driver = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
         if (driver == null)
             throw new InvalidOperationException("Driver profile not found.");
 
@@ -202,4 +202,56 @@ public class DriverService : IDriverService
     }
 
 
+    public async Task<string> RejectRide(string rideId)
+    {
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+
+        if (string.IsNullOrEmpty(rideId))
+            throw new ArgumentException("Ride ID is required.");
+
+        Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
+        if (ride == null)
+            throw new InvalidOperationException("Ride not found.");
+
+        // Verify that current user is the driver for this ride
+        if (ride.Driver?.UserId != userId)
+            throw new UnauthorizedAccessException("You are not authorized to reject this ride.");
+
+        // Validate ride status
+        if (ride.RideStatus != RideStatus.Pending)
+            throw new InvalidOperationException("Ride cannot be rejected at this stage.");
+
+        // Update status
+        ride.RideStatus = RideStatus.Rejected;
+        ride.UpdatedAt = DateTime.Now;
+
+        _rideRepo.Update(ride);
+        await _unitOfWork.SaveChangesAsync();
+
+        return $"Ride {ride.Id} has been rejected successfully.";
+    }
+
+
+    public async Task<string> ToggleIsAvailable()
+    {
+        // Get currently logged-in user
+        string userId = _contextAccessor.HttpContext.User.GetUserId();
+        if (string.IsNullOrEmpty(userId))
+            throw new InvalidOperationException("User not authenticated.");
+
+        // Find the user
+        DriverPersonalData user = await _driverPersonalDataRepo.GetSingleByAsync(x => x.UserId == userId);
+        if (user == null)
+            throw new InvalidOperationException("User not found.");
+
+        // Toggle the status
+        user.IsAvailable = !user.IsAvailable;
+        user.UpdatedAt = DateTime.Now;
+
+        _driverPersonalDataRepo.Update(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        string isAvailable = user.Active ? "active" : "inactive";
+        return isAvailable;
+    }
 }

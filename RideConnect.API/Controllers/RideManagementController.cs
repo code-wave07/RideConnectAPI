@@ -64,15 +64,6 @@ public class RideManagementController : BaseController
         return Ok(response);
     }
 
-
-    [HttpPost("reject-ride")]
-    public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
-    {
-        string response = await _rideManagementService.RejectRide(request.RideId);
-        return Ok(response);
-    }
-
-
  
 
     [HttpGet("ride-types")]

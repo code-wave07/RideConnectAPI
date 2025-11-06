@@ -296,34 +296,7 @@ public class RideManagementService : IRideManagementService
         return $"Ride {ride.Id} has been cancelled successfully.";
     }
 
-    public async Task<string> RejectRide(string rideId)
-    {
-        string userId = _contextAccessor.HttpContext.User.GetUserId();
-
-        if (string.IsNullOrEmpty(rideId))
-            throw new ArgumentException("Ride ID is required.");
-
-        Ride ride = await _rideRepo.GetSingleByAsync(x => x.Id == rideId);
-        if (ride == null)
-            throw new InvalidOperationException("Ride not found.");
-
-        // Verify that current user is the driver for this ride
-        if (ride.Driver?.UserId != userId)
-            throw new UnauthorizedAccessException("You are not authorized to reject this ride.");
-
-        // Validate ride status
-        if (ride.RideStatus != RideStatus.Pending)
-            throw new InvalidOperationException("Ride cannot be rejected at this stage.");
-
-        // Update status
-        ride.RideStatus = RideStatus.Rejected;
-        ride.UpdatedAt = DateTime.Now;
-
-        _rideRepo.Update(ride);
-        await _unitOfWork.SaveChangesAsync();
-
-        return $"Ride {ride.Id} has been rejected successfully.";
-    }
+   
 
 
     public async Task<List<RTResponse>> GetRideTypes()

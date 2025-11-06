@@ -18,4 +18,8 @@ public interface IDriverService
     public Task<DriverProfileResponse> GetDriver(string driverId);
 
     public Task<string> AcceptRide(string rideId);
+
+    public  Task<string> RejectRide(string rideId);
+
+    public  Task<string> ToggleIsAvailable();
 }

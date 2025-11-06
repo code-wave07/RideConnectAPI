@@ -17,7 +17,6 @@ public interface IRideManagementService
 
     //public Task<RideDetailsResponse> GetRidesByPassenger();
 //=======
-    public Task<string> RejectRide(string rideId);
     public Task<string> CancelRide(string rideId);
     public Task<List<RTResponse>> GetRideTypes();
     //>>>>>>> 1932df1cda457423c8e98902768639390e8d957d

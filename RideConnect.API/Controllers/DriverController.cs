@@ -63,4 +63,19 @@ public class DriverController : BaseController
         return Ok(response);
     }
 
+    [HttpPost("reject-ride")]
+    public async Task<IActionResult> RejectRide([FromBody] RejectRideRequest request)
+    {
+        string response = await _driverService.RejectRide(request.RideId);
+        return Ok(response);
+    }
+
+
+    [HttpPut("toggle-active")]
+    public async Task<IActionResult> ToggleIsAvailable()
+    {
+        string response = await _driverService.ToggleActiveStatus();
+        return Ok(new { Message = response });
+    }
+
 }

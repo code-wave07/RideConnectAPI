@@ -12,6 +12,7 @@ public class DriverPersonalData : BaseEntity
     public string? BankName { get; set; }
     public string? AccountNumber { get; set; }
     public string? AccountName { get; set; }
+    public bool IsAvailable { get; set; } = false;
     public string UserId { get; set; }
     public virtual ApplicationUser User { get; set; }
     public virtual CarDetails CarDetails { get; set; }
