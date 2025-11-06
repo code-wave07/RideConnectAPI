@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RideConnect.Data.Context;
 
@@ -11,9 +12,11 @@ using RideConnect.Data.Context;
 namespace RideConnect.Data.Migrations
 {
     [DbContext(typeof(RideConnectDbContext))]
-    partial class RideConnectDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251106111544_KachiToday")]
+    partial class KachiToday
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,7 +374,8 @@ namespace RideConnect.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Address")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("varchar(256)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -547,7 +551,7 @@ namespace RideConnect.Data.Migrations
                         {
                             Id = "1",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 11, 6, 12, 24, 51, 16, DateTimeKind.Local).AddTicks(2595),
+                            CreatedAt = new DateTime(2025, 11, 6, 12, 15, 39, 158, DateTimeKind.Local).AddTicks(9548),
                             Description = "Private ride, one passenger only",
                             Type = "Solo"
                         },
@@ -555,7 +559,7 @@ namespace RideConnect.Data.Migrations
                         {
                             Id = "2",
                             Active = true,
-                            CreatedAt = new DateTime(2025, 11, 6, 12, 24, 51, 16, DateTimeKind.Local).AddTicks(2628),
+                            CreatedAt = new DateTime(2025, 11, 6, 12, 15, 39, 158, DateTimeKind.Local).AddTicks(9571),
                             Description = "Ride shared with other passengers",
                             Type = "Shared"
                         });

@@ -53,7 +53,7 @@ public class RideConnectDbContext : IdentityDbContext<ApplicationUser, Applicati
             //b.HasKey(x => x.Id);
             b.Property(e => e.Id).ValueGeneratedOnAdd();
 //<<<<<<< HEAD
-            b.Property(x => x.Address).HasColumnName("varchar(256)");
+            b.Property(x => x.Address).HasColumnType("varchar(256)");
 //=======
             b.Property(x => x.Address).HasColumnType("varchar(256)");
             b.Property(x => x.DateOfBirth);
