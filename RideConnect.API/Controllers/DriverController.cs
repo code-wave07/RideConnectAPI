@@ -75,7 +75,7 @@ public class DriverController : BaseController
     public async Task<IActionResult> ToggleIsAvailable()
     {
         string response = await _driverService.ToggleIsAvailable();
-        return Ok(new { Message = response });
+        return Ok(response);
     }
 
 }
