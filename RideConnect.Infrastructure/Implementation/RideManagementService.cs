@@ -68,7 +68,6 @@ public class RideManagementService : IRideManagementService
         //  Create new ride
         var ride = new Ride
         {
-            From = request.From,
             Location = request.Location,
             RideTypeId = request.RideTypeId,
             DriverId = request.DriverId,

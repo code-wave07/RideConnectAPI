@@ -9,7 +9,6 @@ namespace RideConnect.Models.Requests;
 
 public class BookRideRequest
 {
-    public string From { get; set; } = "Akanu Ibiam International Airport";
     public string Location { get; set; }
     public string RideTypeId { get; set; }
     public string DriverId { get; set; }

@@ -96,6 +96,7 @@ public class DriverService : IDriverService
 
         if (!drivers.Any())
             return new List<DriverProfileResponse>();
+        
 
         //response details
         List<DriverProfileResponse> responses = drivers.Select(driver => new DriverProfileResponse
