@@ -71,7 +71,7 @@ public class DriverController : BaseController
     }
 
 
-    [HttpPut("toggle-active")]
+    [HttpPut("toggle-is-available")]
     public async Task<IActionResult> ToggleIsAvailable()
     {
         string response = await _driverService.ToggleIsAvailable();

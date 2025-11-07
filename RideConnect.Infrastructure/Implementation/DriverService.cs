@@ -90,7 +90,8 @@ public class DriverService : IDriverService
             include: x => x
                 .Include(u => u.User)
                 .Include(x => x.CarDetails)
-        );
+        ).Where(x => x.IsAvailable);
+
 
         List<DriverPersonalData> drivers = await driversQueryable.ToListAsync();
 
